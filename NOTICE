@@ -1,0 +1,18 @@
+Some data in this repository comes from other projects, under their own licenses. The full texts are in licenses/.
+
+- Codicons, © Microsoft Corporation: the UI icons in packages/icons/src/data/codicons.ts.
+  Icons: Creative Commons Attribution 4.0 International (licenses/codicons-icons-CC-BY-4.0.txt).
+  Code: MIT License (licenses/codicons-code-MIT.txt).
+
+- Seti UI, © 2014 Jesse Weed: the file icon glyphs in packages/icons/src/data/seti.ts.
+  MIT License (licenses/seti-ui-MIT.txt).
+
+- © Microsoft Corporation, MIT License (licenses/microsoft-MIT.txt):
+  - the file-to-icon mapping in packages/icons/src/data/seti.ts
+  - the language definitions and editing rules in packages/languages/src/data/languages.ts
+  - the light and dark color themes in packages/theme/src/data/themes.css
+  - the bracket pair colors and JSX Enter rules restated in packages/theme and packages/languages
+  - the Markdown preview styles and copy icons restated in packages/markdown
+
+- Unicode Character Database, © Unicode, Inc.: the character widths in packages/terminal/src/data/widths.ts,
+  from EastAsianWidth.txt. Unicode License V3 (licenses/unicode-V3.txt).

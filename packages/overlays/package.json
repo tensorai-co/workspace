@@ -1,0 +1,40 @@
+{
+  "name": "@tensorai-workspace/overlays",
+  "version": "0.1.0",
+  "description": "What opens over the page: the hover, menus and dialogs.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/overlays#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/overlays"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tensorai-workspace/theme": "0.1.0",
+    "@tensorai-workspace/icons": "0.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

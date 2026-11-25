@@ -1,0 +1,72 @@
+/*
+ * A tab joined to the line under it. Its fill (.ws-joined) is rounded on top and flows into the line through a curved
+ * shoulder on each side; its edge (.ws-joined-edge, the next sibling) draws the outline. Both go inside the tab, which
+ * is positioned. --ws-joined-surface is the fill and what it joins onto; --ws-joined-line is the outline's color.
+ * .ws-joined-start leaves out the left shoulder, for a tab at the start of its row; .ws-joined-flush also leaves out
+ * the left border, for a tab against the edge of a card.
+ */
+.ws-joined {
+  position: absolute;
+  z-index: 1;
+  inset: -1px 0 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  background: var(--ws-joined-surface);
+  pointer-events: none;
+}
+.ws-joined::before,
+.ws-joined::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 7px;
+  height: 7px;
+  border-bottom: 1px solid var(--ws-joined-line);
+  clip-path: inset(0);
+}
+.ws-joined::before {
+  right: 100%;
+  border-right: 1px solid var(--ws-joined-line);
+  border-bottom-right-radius: 7px;
+  box-shadow: 3.5px 3.5px 0 3.5px var(--ws-joined-surface);
+}
+.ws-joined::after {
+  left: 100%;
+  border-left: 1px solid var(--ws-joined-line);
+  border-bottom-left-radius: 7px;
+  box-shadow: -3.5px 3.5px 0 3.5px var(--ws-joined-surface);
+}
+.ws-joined-edge {
+  position: absolute;
+  z-index: 1;
+  inset: -1px 0;
+  box-sizing: border-box;
+  border: 1px solid var(--ws-joined-line);
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  clip-path: inset(0 0 7px);
+  pointer-events: none;
+}
+.ws-joined-start::before,
+.ws-joined-flush::before {
+  content: none;
+}
+.ws-joined-flush,
+.ws-joined-flush + .ws-joined-edge {
+  border-left: 0;
+  border-radius: 7px 7px 0 0 / 8px 7px 0 0;
+}
+
+/* The flat layout: square, with no shoulders. */
+[data-layout='flat'] .ws-joined,
+[data-layout='flat'] .ws-joined-edge {
+  border-radius: 0;
+  clip-path: none;
+}
+[data-layout='flat'] .ws-joined::before,
+[data-layout='flat'] .ws-joined::after {
+  content: none;
+}

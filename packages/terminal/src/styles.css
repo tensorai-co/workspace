@@ -1,0 +1,389 @@
+/* The terminal. Colors come only from theme tokens; sizes are measured (see the layout check). */
+@import '@tensorai-workspace/icons/styles.css';
+
+.ws-terminal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ws-term-foreground, var(--ws-color-terminal-foreground));
+  background: var(--ws-term-background, var(--ws-color-terminal-background, var(--ws-color-panel-background)));
+  font-family: var(--ws-font-code);
+  font-size: var(--ws-font-code-size);
+  font-kerning: none;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: auto;
+  cursor: text;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ws-terminal.ws-mouse {
+  cursor: default;
+}
+.ws-terminal.ws-link {
+  cursor: pointer;
+}
+
+/* What doesn't make a row is left over below. */
+.ws-term-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 8px 0 8px 20px;
+}
+.ws-term-grid {
+  position: relative;
+}
+.ws-term-probe {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  line-height: normal;
+}
+
+.ws-term-row {
+  height: var(--ws-cell-height);
+  overflow: hidden;
+  line-height: var(--ws-cell-height);
+  letter-spacing: var(--ws-letter-spacing);
+  white-space: pre;
+  contain: strict;
+}
+.ws-term-row > span {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+/* Cells of their own: a wide character, one from another font, or a drawn shape. */
+.ws-term-cells {
+  overflow: hidden;
+  letter-spacing: 0;
+}
+.ws-term-cells > i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+  font-style: normal;
+}
+.ws-blink-off .ws-blink {
+  opacity: 0;
+}
+
+.ws-term-cursor {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  height: var(--ws-cell-height);
+  overflow: hidden;
+  line-height: var(--ws-cell-height);
+  letter-spacing: var(--ws-letter-spacing);
+  white-space: pre;
+  pointer-events: none;
+}
+.ws-term-cursor.ws-block {
+  color: var(--ws-cursor-text);
+  background: var(--ws-cursor);
+}
+.ws-term-cursor.ws-outline {
+  border: 1px solid var(--ws-cursor);
+}
+.ws-term-cursor.ws-bar {
+  border-left: 1px solid var(--ws-cursor);
+}
+.ws-term-cursor.ws-underline {
+  border-bottom: 1px solid var(--ws-cursor);
+}
+.ws-term-cursor.ws-cursor-blink {
+  animation: ws-term-blink 1.2s steps(1) infinite;
+}
+@keyframes ws-term-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ws-term-links {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ws-term-links > div {
+  position: absolute;
+  box-sizing: border-box;
+  height: var(--ws-cell-height);
+  border-bottom: 1px solid currentColor;
+}
+
+/* Takes the typing. It sits at the cursor, where an input method's window belongs. */
+.ws-term-input {
+  position: absolute;
+  z-index: -1;
+  width: var(--ws-cell-width);
+  height: var(--ws-cell-height);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  outline: none;
+  opacity: 0;
+  resize: none;
+  white-space: nowrap;
+  font: inherit;
+  line-height: var(--ws-cell-height);
+}
+.ws-term-composition {
+  position: absolute;
+  z-index: 2;
+  display: none;
+  line-height: var(--ws-cell-height);
+  white-space: pre;
+  text-decoration: underline;
+  background: var(--ws-term-background);
+  pointer-events: none;
+}
+.ws-term-composition.ws-visible {
+  display: block;
+}
+
+.ws-term-scrollbar {
+  position: absolute;
+  z-index: 3;
+  top: 8px;
+  right: 0;
+  width: 10px;
+  opacity: 0;
+  cursor: default;
+  transition: opacity 0.8s linear;
+}
+.ws-terminal:hover .ws-term-scrollbar,
+.ws-term-scrollbar.ws-active {
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.ws-term-slider {
+  border-radius: 4px;
+  background: var(--ws-color-scrollbarSlider-background);
+}
+.ws-term-slider:hover {
+  background: var(--ws-color-scrollbarSlider-hoverBackground);
+}
+.ws-active > .ws-term-slider {
+  background: var(--ws-color-scrollbarSlider-activeBackground);
+}
+
+/* The size, for a moment after it changes. */
+.ws-term-size {
+  position: absolute;
+  z-index: 35;
+  top: 50%;
+  left: 50%;
+  padding: 4px 10px;
+  border: 1px solid var(--ws-color-editorWidget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorWidget-foreground);
+  background: var(--ws-color-editorWidget-background);
+  box-shadow: var(--ws-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 11px;
+  line-height: 18.2px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 80ms ease-out;
+  pointer-events: none;
+}
+.ws-term-size.ws-visible {
+  opacity: 1;
+}
+
+/* The panel. */
+.ws-terminal-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: var(--ws-color-foreground);
+  background: var(--ws-color-terminal-background, var(--ws-color-panel-background));
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 18.2px;
+}
+.ws-terminal-header {
+  --ws-panel-line: var(--ws-color-panelSection-border);
+  --ws-panel-surface: var(--ws-color-terminal-background, var(--ws-color-panel-background));
+  --ws-joined-surface: var(--ws-panel-surface);
+  --ws-joined-line: var(--ws-panel-line);
+  display: flex;
+  flex: none;
+  height: 32px;
+  overflow: hidden;
+  background: var(--ws-color-editorGroupHeader-connectedTabsBackground, var(--ws-color-editorGroupHeader-tabsBackground));
+  box-shadow: inset 0 -1px 0 var(--ws-panel-line);
+}
+/* The panel's tab, joined to what's below as the editor's are. */
+.ws-terminal-heading {
+  position: relative;
+  flex: none;
+  padding: 0 16px;
+  color: var(--ws-color-panelTitle-activeForeground);
+  line-height: 24px;
+}
+.ws-terminal-heading > span {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-top: 4px;
+}
+.ws-terminal-actions {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  align-items: center;
+  height: 32px;
+  margin-left: auto;
+  padding-right: 4px;
+}
+.ws-terminal-action {
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: var(--ws-color-icon-foreground);
+  background: none;
+  cursor: pointer;
+}
+.ws-terminal-single {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: var(--ws-color-foreground);
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  line-height: 18.2px;
+  cursor: pointer;
+}
+.ws-terminal-single > .ws-codicon {
+  margin-right: 4px;
+  color: var(--ws-color-icon-foreground);
+}
+:is(.ws-terminal-action, .ws-terminal-single):hover {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+:is(.ws-terminal-action, .ws-terminal-single):focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+.ws-terminal-separator {
+  width: 1px;
+  height: 16px;
+  margin: 0 0 0 4px;
+  background: var(--ws-color-disabledForeground);
+}
+
+.ws-terminal-body {
+  flex: 1;
+  min-height: 0;
+}
+.ws-terminal-split > .ws-pane:not(.ws-first)::before {
+  background: var(--ws-color-terminal-border, var(--ws-color-panel-border));
+}
+.ws-terminal-stack,
+.ws-terminal-slot {
+  height: 100%;
+}
+.ws-terminal-slot[hidden] {
+  display: none;
+}
+
+.ws-terminal-list {
+  height: 100%;
+  padding-left: 1px;
+  overflow: hidden auto;
+  background: var(--ws-color-panel-background);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ws-terminal-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 22px;
+  padding: 0 8px;
+  outline-offset: -1px;
+  line-height: 22px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ws-terminal-list.ws-narrow > .ws-terminal-tab {
+  justify-content: center;
+  padding: 0;
+}
+.ws-terminal-tab > .ws-codicon {
+  color: var(--ws-color-icon-foreground);
+}
+.ws-terminal-tab.ws-exited > .ws-codicon:first-child {
+  color: var(--ws-color-errorForeground);
+}
+.ws-terminal-name {
+  flex: 1;
+  min-width: 0;
+  margin-left: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ws-terminal-tab:hover {
+  background: var(--ws-color-list-hoverBackground);
+}
+.ws-terminal-tab.ws-active {
+  color: var(--ws-color-list-inactiveSelectionForeground);
+  background: var(--ws-color-list-inactiveSelectionBackground);
+}
+.ws-terminal-list:focus-within > .ws-terminal-tab.ws-active {
+  color: var(--ws-color-list-activeSelectionForeground);
+  background: var(--ws-color-list-activeSelectionBackground);
+}
+.ws-terminal-tab:focus {
+  outline: none;
+}
+.ws-terminal-tab:focus-visible {
+  outline: 1px solid var(--ws-color-list-focusOutline);
+}
+.ws-terminal-tab.ws-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--ws-color-terminal-tab-activeBorder);
+}
+.ws-terminal-kill {
+  display: none;
+  flex: none;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  color: var(--ws-color-icon-foreground);
+  background: none;
+  cursor: pointer;
+}
+.ws-terminal-tab:hover > .ws-terminal-kill,
+.ws-terminal-list:focus-within > .ws-active > .ws-terminal-kill {
+  display: block;
+}
+.ws-terminal-kill:hover {
+  background: var(--ws-color-toolbar-hoverBackground);
+}

@@ -1,0 +1,56 @@
+{
+  "name": "@tensorai-workspace/editor",
+  "version": "0.1.0",
+  "description": "A code editor built for heavy editing: immutable state, transactions, a virtualized view.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/editor#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/editor"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tensorai-workspace/text": "0.1.0",
+    "@tensorai-workspace/languages": "0.1.0",
+    "@tensorai-workspace/theme": "0.1.0",
+    "@tensorai-workspace/icons": "0.1.0",
+    "@tensorai-workspace/host": "0.1.0",
+    "@tensorai-workspace/markdown-parser": "0.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@tensorai-workspace/testing": "0.1.0"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "types": []
+  },
+  "include": [
+    "src",
+    "test"
+  ],
+  "references": [
+    { "path": "../editor" },
+    { "path": "../explorer" },
+    { "path": "../host" },
+    { "path": "../icons" },
+    { "path": "../languages" },
+    { "path": "../markdown" },
+    { "path": "../overlays" },
+    { "path": "../split" },
+    { "path": "../tabs" },
+    { "path": "../terminal" },
+    { "path": "../testing" },
+    { "path": "../theme" }
+  ]
+}

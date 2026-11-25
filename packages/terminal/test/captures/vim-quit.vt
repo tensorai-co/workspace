@@ -1,0 +1,18 @@
+[?1034h$ echo before
+before
+$ vim -n -u NONE -N code.py
+[?1049h[>4;2m[?1h=[?2004h[?1004h[1;24r[?12h[?12l[22;2t[22;1t[27m[23m[29m[m[H[2J[?25l[24;1H"code.py" 14L, 235B[2;1H▽[6n[2;1H  [3;1HPzz\[0%m[6n[3;1H           [1;1H[>c[1;1Himport os[2;1H[K[3;1Hdef greet(name):[3;17H[K[4;5H"""Say hello."""
+    for i in range(3):[6;9Hprint(f"hello {name} {i}")
+
+class Thing:
+    value = 42
+    def double(self):[11;9Hreturn self.value * 2
+
+if __name__ == "__main__":
+    greet("world")
+[94m~                                                                               [16;1H~                                                                               [17;1H~                                                                               [18;1H~                                                                               [19;1H~                                                                               [20;1H~                                                                               [21;1H~                                                                               [22;1H~                                                                               [23;1H~                                                                               [1;1H[?25h[?4m
+
+
+[?25l[m[24;70Hx[4;1H[24;70H [4;1H[24;70Hdl[4;1H[24;70H  [4;1H   """Say hello."[4;20H[K[4;1H[?25h[?25l[24;1H[K[24;1H:q![?2004l[>4;m[23;2t[23;1t[24;1H[K[24;1H[?1004l[?2004l[?1l>[?1049l[?25h[>4;m$ echo after
+after
+$ 

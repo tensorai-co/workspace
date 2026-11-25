@@ -1,0 +1,50 @@
+{
+  "name": "@tensorai-workspace/workspace",
+  "version": "0.1.0",
+  "description": "The full IDE: titlebar, activity bar, sidebar, editors, panel, secondary side bar and status bar, with one registry of commands and keybindings.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/workspace#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/workspace"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tensorai-workspace/editor": "0.1.0",
+    "@tensorai-workspace/explorer": "0.1.0",
+    "@tensorai-workspace/host": "0.1.0",
+    "@tensorai-workspace/icons": "0.1.0",
+    "@tensorai-workspace/languages": "0.1.0",
+    "@tensorai-workspace/markdown": "0.1.0",
+    "@tensorai-workspace/overlays": "0.1.0",
+    "@tensorai-workspace/split": "0.1.0",
+    "@tensorai-workspace/tabs": "0.1.0",
+    "@tensorai-workspace/terminal": "0.1.0",
+    "@tensorai-workspace/theme": "0.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

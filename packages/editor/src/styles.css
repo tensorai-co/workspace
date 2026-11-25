@@ -1,0 +1,846 @@
+/* The code editor. Colors come only from theme tokens; sizes are measured (see the layout check). */
+
+.ws-editor {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  background: var(--ws-color-editor-background);
+  color: var(--ws-color-editor-foreground);
+  font-family: var(--ws-font-code);
+  font-size: var(--ws-font-code-size);
+  line-height: var(--ws-line-height);
+  font-feature-settings: 'liga' 0, 'calt' 0;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: auto;
+  cursor: text;
+  --ws-gutter: 66px;
+  --ws-numbers: 22px;
+  --ws-lh: 18px;
+}
+
+.ws-scroller {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.ws-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.ws-sizer {
+  position: relative;
+  min-width: 100%;
+}
+
+/* The gutter stays put when the code scrolls sideways. */
+.ws-gutter {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  float: left;
+  width: var(--ws-gutter);
+  height: 100%;
+  background: var(--ws-color-editorGutter-background, var(--ws-color-editor-background));
+  cursor: default;
+  user-select: none;
+}
+
+.ws-line-number {
+  position: absolute;
+  left: 18px;
+  width: var(--ws-numbers);
+  height: var(--ws-lh);
+  text-align: right;
+  color: var(--ws-color-editorLineNumber-foreground);
+  white-space: nowrap;
+}
+.ws-line-number.ws-active {
+  color: var(--ws-color-editorLineNumber-activeForeground);
+}
+
+.ws-content {
+  position: absolute;
+  top: 0;
+  left: var(--ws-gutter);
+  right: 0;
+  height: 100%;
+}
+
+.ws-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Measures the code font: when it changes size, the editor measures again. */
+.ws-font-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+.ws-line {
+  position: absolute;
+  left: 0;
+  height: var(--ws-lh);
+  white-space: pre;
+  tab-size: 4;
+  contain: layout style;
+}
+
+.ws-current-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--ws-lh);
+  box-sizing: border-box;
+  background: var(--ws-color-editor-lineHighlightBackground);
+  border: 2px solid var(--ws-color-editor-lineHighlightBorder, transparent);
+}
+
+.ws-selection {
+  position: absolute;
+  height: var(--ws-lh);
+  background: var(--ws-color-editor-inactiveSelectionBackground);
+}
+.ws-focused .ws-selection {
+  background: var(--ws-color-editor-selectionBackground);
+}
+
+.ws-cursor {
+  position: absolute;
+  width: 2px;
+  height: var(--ws-lh);
+  background: var(--ws-color-editorCursor-foreground);
+  visibility: hidden;
+}
+.ws-focused .ws-cursor {
+  visibility: visible;
+}
+.ws-focused .ws-blink .ws-cursor {
+  animation: ws-blink 1.06s steps(1) infinite;
+}
+@keyframes ws-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The hidden input sits at the cursor, so an IME's candidate window opens there. */
+.ws-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: var(--ws-lh);
+  padding: 0;
+  border: 0;
+  margin: 0;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  opacity: 0;
+  color: transparent;
+  background: transparent;
+  font: inherit;
+  white-space: pre;
+  z-index: -1;
+}
+
+/* The overlay scrollbars: 14px vertical, 12px horizontal, fading in on hover. */
+.ws-scrollbar {
+  position: absolute;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.8s linear;
+}
+.ws-editor:hover .ws-scrollbar,
+.ws-scrollbar:has(.ws-active) {
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.ws-vertical {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+}
+.ws-horizontal {
+  right: 14px;
+  bottom: 0;
+  height: 12px;
+}
+.ws-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ws-color-scrollbarSlider-background);
+}
+.ws-slider:hover {
+  background: var(--ws-color-scrollbarSlider-hoverBackground);
+}
+.ws-slider.ws-active {
+  background: var(--ws-color-scrollbarSlider-activeBackground);
+}
+.ws-editor.ws-scrolled::before {
+  content: '';
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  box-shadow: var(--ws-color-scrollbar-shadow) 0 6px 6px -6px inset;
+  pointer-events: none;
+}
+
+/* AI ghost text with syntax highlighting on: the token colors, faded, in italics. Without tokens
+   it takes the ghost text color. */
+.ws-editor .ws-ghost {
+  font-style: italic;
+  opacity: 0.7;
+}
+.ws-editor .ws-ghost-plain {
+  color: var(--ws-color-editorGhostText-foreground);
+  opacity: 1;
+}
+
+/* A next edit, as an inline diff: the removed text struck through, the added text after it. */
+.ws-editor .ws-edit-removed {
+  background: var(--ws-color-inlineEdit-originalChangedTextBackground);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.ws-editor .ws-edit-inserted {
+  background: var(--ws-color-inlineEdit-modifiedChangedTextBackground);
+}
+
+/* Its marker in the gutter: "Tab" goes to the edit, then makes it. */
+.ws-edit-area {
+  position: absolute;
+  left: 1px;
+  border-radius: 3px;
+  background: var(--ws-color-inlineEdit-gutterIndicator-background);
+  pointer-events: none;
+}
+.ws-edit-pill {
+  position: absolute;
+  z-index: 4;
+  left: 1px;
+  display: flex;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid var(--ws-color-button-background);
+  border-radius: 3px;
+  color: var(--ws-color-button-foreground);
+  background: var(--ws-color-inlineEdit-gutterIndicator-primaryBackground);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, width 0.2s ease-in-out;
+}
+.ws-edit-pill.ws-accept {
+  background: var(--ws-color-button-background);
+}
+.ws-edit-pill[hidden],
+.ws-edit-area[hidden] {
+  display: none;
+}
+.ws-edit-pill-number {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+.ws-edit-pill-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 100%;
+  transition: rotate 0.2s ease-in-out;
+}
+
+/* Find matches: every match, the current one darker, and the range "Find in Selection" uses. */
+.ws-find-match {
+  position: absolute;
+  background: var(--ws-color-editor-findMatchHighlightBackground);
+}
+.ws-find-match.ws-current {
+  background: var(--ws-color-editor-findMatchBackground);
+}
+.ws-find-scope {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--ws-lh);
+  background: var(--ws-color-editor-findRangeHighlightBackground);
+}
+
+/* The find widget, measured: 419px at the top right, 28px in from the editor's right edge. */
+.ws-find {
+  --ws-find-actions: 146px;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 28px;
+  box-sizing: border-box;
+  width: 419px;
+  height: 33px;
+  margin-top: 4px;
+  padding: 0 4px 0 9px;
+  overflow: hidden;
+  visibility: hidden;
+  border: 1px solid var(--ws-color-widget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorWidget-foreground);
+  background: var(--ws-color-editorWidget-background);
+  box-shadow: var(--ws-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 19px;
+  cursor: default;
+  transform: translateY(calc(-100% - 10px));
+  transition: transform 0.2s linear, visibility 0s linear 0.2s;
+}
+.ws-find.ws-visible {
+  visibility: visible;
+  transform: translateY(0);
+  transition: transform 0.2s linear;
+}
+.ws-find.ws-replacing {
+  height: 62px;
+}
+.ws-find.ws-reduced {
+  --ws-find-actions: 74px;
+}
+.ws-find.ws-reduced .ws-find-count {
+  display: none;
+}
+.ws-find.ws-narrow {
+  max-width: 257px;
+}
+.ws-find.ws-collapsed {
+  max-width: 170px;
+}
+.ws-find.ws-collapsed .ws-find-actions > .ws-find-button,
+.ws-find.ws-collapsed .ws-find-part > .ws-find-input > .ws-find-controls {
+  display: none;
+}
+
+.ws-find-button {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  margin: 0 0 0 3px;
+  padding: 3px;
+  border: 0;
+  border-radius: 5px;
+  outline-offset: -1px;
+  color: var(--ws-color-icon-foreground);
+  background: none;
+  cursor: pointer;
+}
+.ws-find-button:hover:not(:disabled) {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+.ws-find-button:disabled {
+  color: var(--ws-color-disabledForeground);
+  cursor: default;
+}
+.ws-find-button:focus-visible,
+.ws-find-option:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+.ws-find-toggle-replace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: calc(100% - 8px);
+  margin: 4px 0 4px 5px;
+  border-radius: var(--ws-radius-small);
+}
+.ws-find-close {
+  position: absolute;
+  top: 5px;
+  right: 4px;
+  margin: 0;
+}
+
+.ws-find-part {
+  display: flex;
+  margin: 3px 25px 0 17px;
+  font-size: 12px;
+}
+.ws-replace-part {
+  display: none;
+}
+.ws-replacing > .ws-replace-part {
+  display: flex;
+}
+.ws-find-input {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 25px;
+  border: 1px solid var(--ws-color-input-border);
+  border-radius: 4px;
+  color: var(--ws-color-input-foreground);
+  background: var(--ws-color-input-background);
+}
+.ws-replace-part > .ws-find-input {
+  flex: none;
+  width: calc(100% - var(--ws-find-actions));
+}
+.ws-find-input.ws-focused {
+  outline: 1px solid var(--ws-color-focusBorder);
+  outline-offset: -1px;
+}
+.ws-find-input.ws-error {
+  border-color: var(--ws-color-inputValidation-errorBorder);
+}
+.ws-find-text {
+  box-sizing: border-box;
+  width: calc(100% - 66px);
+  height: 23px;
+  margin: 0;
+  padding: 2px 6px;
+  overflow: hidden;
+  border: 0;
+  outline: none;
+  color: inherit;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  line-height: 19px;
+  white-space: pre;
+  resize: none;
+}
+.ws-replace-part .ws-find-text {
+  width: calc(100% - 22px);
+}
+.ws-find-text::placeholder {
+  color: var(--ws-color-input-placeholderForeground);
+}
+.ws-find-controls {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+  display: flex;
+}
+.ws-find-option {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  margin: 0 0 0 2px;
+  padding: 1px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  outline-offset: -1px;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+.ws-find-option:hover:not(.ws-checked) {
+  background: var(--ws-color-inputOption-hoverBackground);
+}
+.ws-find-option.ws-checked {
+  border-color: var(--ws-color-inputOption-activeBorder);
+  color: var(--ws-color-inputOption-activeForeground);
+  background: var(--ws-color-inputOption-activeBackground);
+}
+.ws-find-in-selection {
+  width: 22px;
+  height: 22px;
+  padding: 2px;
+  border-radius: 5px;
+}
+.ws-find-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 25px;
+}
+.ws-find-count {
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  min-width: 69px;
+  height: 25px;
+  margin-left: 3px;
+  padding: 2px 0 0 2px;
+  font-size: 12px;
+  line-height: 23px;
+  white-space: nowrap;
+}
+.ws-no-results .ws-find-count {
+  color: var(--ws-color-errorForeground);
+}
+
+/* A line wrapped into several rows draws each as its own row. */
+.ws-row {
+  height: var(--ws-lh);
+  white-space: pre;
+}
+
+/* Folding: chevrons in the gutter on hover (always for a folded region), "⋯" after a folded
+   line, and that line shaded. */
+.ws-fold {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: var(--ws-lh);
+  color: var(--ws-color-editorGutter-foldingControlForeground, var(--ws-color-icon-foreground));
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.ws-gutter:hover .ws-fold,
+.ws-fold.ws-folded {
+  opacity: 1;
+}
+.ws-folded-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--ws-lh);
+  background: var(--ws-color-editor-foldBackground);
+}
+.ws-editor .ws-fold-placeholder {
+  margin: 0 0.2em;
+  color: var(--ws-color-editor-foldPlaceholderForeground);
+  cursor: pointer;
+}
+
+/* Problems: the wavy line, 6×3, along the bottom of the text it's about. */
+.ws-squiggle {
+  position: absolute;
+  height: var(--ws-lh);
+  background: var(--ws-color-editorError-foreground);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3' height='3' width='6'%3E%3Cg fill='%23000'%3E%3Cpolygon points='5.5,0 2.5,3 1.1,3 4.1,0'/%3E%3Cpolygon points='4,0 6,2 6,0.6 5.4,0'/%3E%3Cpolygon points='0,2 1,3 2.4,3 0,0.6'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 100%;
+  pointer-events: none;
+}
+.ws-squiggle.ws-warning {
+  background: var(--ws-color-editorWarning-foreground);
+}
+.ws-squiggle.ws-info {
+  background: var(--ws-color-editorInfo-foreground);
+}
+/* Hints are three dots at the start, not a line. */
+.ws-squiggle.ws-hint {
+  background: var(--ws-color-editorHint-foreground);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='3' width='12'%3E%3Cg fill='%23000'%3E%3Ccircle cx='1' cy='1' r='1'/%3E%3Ccircle cx='5' cy='1' r='1'/%3E%3Ccircle cx='9' cy='1' r='1'/%3E%3C/g%3E%3C/svg%3E") no-repeat 0 100%;
+}
+
+/* ⌘ over a word: it's a link to its definition. */
+.ws-link {
+  position: absolute;
+  height: var(--ws-lh);
+  box-shadow: inset 0 -1px var(--ws-color-editorLink-activeForeground);
+  pointer-events: none;
+}
+.ws-content.ws-linking {
+  cursor: pointer;
+}
+
+/* The suggest widget. */
+.ws-suggest {
+  position: fixed;
+  z-index: 40;
+  box-sizing: border-box;
+  width: 432px;
+  overflow: hidden;
+  border: 1px solid var(--ws-color-editorSuggestWidget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorSuggestWidget-foreground);
+  background: var(--ws-color-editorSuggestWidget-background);
+  box-shadow: 0 2px 8px var(--ws-color-widget-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+  cursor: default;
+}
+.ws-suggest[hidden],
+.ws-suggest-details[hidden],
+.ws-editor-hover[hidden] {
+  display: none;
+}
+.ws-suggest-list {
+  position: relative;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.ws-suggest-list.ws-message {
+  padding: 0 4px;
+  line-height: 18px;
+  font-size: 13px;
+}
+.ws-suggest-spacer {
+  width: 1px;
+}
+.ws-suggest-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 18px;
+  padding: 0 10px 0 2px;
+  border-radius: var(--ws-radius-small);
+  font-family: var(--ws-font-code);
+  font-size: var(--ws-font-code-size);
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ws-suggest-row.ws-editor-hover {
+  background: var(--ws-color-list-hoverBackground);
+}
+.ws-suggest-row.ws-focused {
+  color: var(--ws-color-editorSuggestWidget-selectedForeground);
+  background: var(--ws-color-editorSuggestWidget-selectedBackground);
+  outline: 1px solid var(--ws-color-list-focusOutline);
+  outline-offset: -1px;
+}
+.ws-suggest-row.ws-first.ws-focused {
+  border-radius: var(--ws-radius) var(--ws-radius) var(--ws-radius-small) var(--ws-radius-small);
+}
+.ws-suggest-row.ws-last.ws-focused {
+  border-radius: var(--ws-radius-small) var(--ws-radius-small) var(--ws-radius) var(--ws-radius);
+}
+.ws-suggest-row.ws-first.ws-last.ws-focused {
+  border-radius: var(--ws-radius);
+}
+.ws-suggest-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 18px;
+  margin-right: 4px;
+}
+.ws-suggest-icon svg {
+  width: 16px;
+  height: 16px;
+}
+.ws-suggest-row.ws-focused .ws-suggest-icon {
+  color: var(--ws-color-editorSuggestWidget-selectedIconForeground) !important;
+}
+.ws-suggest-label {
+  flex: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ws-suggest-highlight {
+  color: var(--ws-color-editorSuggestWidget-highlightForeground);
+  font-weight: bold;
+}
+.ws-suggest-row.ws-focused .ws-suggest-highlight {
+  color: var(--ws-color-editorSuggestWidget-focusHighlightForeground);
+}
+.ws-suggest-detail {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 11.22px;
+  overflow: hidden;
+  font-size: 85%;
+  text-align: right;
+  text-overflow: ellipsis;
+}
+
+/* The selected item's docs. */
+.ws-suggest-details {
+  position: fixed;
+  z-index: 40;
+  box-sizing: border-box;
+  width: 432px;
+  max-height: 324px;
+  overflow: auto;
+  border: 1px solid var(--ws-color-editorSuggestWidget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorSuggestWidget-foreground);
+  background: var(--ws-color-editorSuggestWidget-background);
+  font-family: var(--ws-font-ui);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: default;
+}
+.ws-suggest-details-header {
+  position: relative;
+}
+.ws-suggest-details-close {
+  position: absolute;
+  top: 6px;
+  right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.ws-suggest-details-close svg {
+  width: 14px;
+  height: 14px;
+}
+.ws-suggest-details-type {
+  margin: 0 24px 0 0;
+  padding: 4px 0 12px 5px;
+  overflow: hidden;
+  font-family: var(--ws-font-code);
+  opacity: 0.7;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+}
+.ws-suggest-details.ws-no-docs .ws-suggest-details-type {
+  padding-bottom: 4px;
+}
+.ws-suggest-docs {
+  padding: 4px 5px;
+}
+.ws-suggest-docs p {
+  margin: 12px 0;
+}
+
+/* The hover. */
+.ws-editor-hover {
+  position: fixed;
+  z-index: 40;
+  box-sizing: border-box;
+  max-width: calc(100vw - 16px);
+  max-height: 250px;
+  overflow: auto;
+  border: 1px solid var(--ws-color-editorHoverWidget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorHoverWidget-foreground);
+  background: var(--ws-color-editorHoverWidget-background);
+  box-shadow: var(--ws-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: default;
+  overflow-wrap: break-word;
+}
+.ws-editor-hover-row {
+  padding: 4px 28px 4px 8px;
+}
+.ws-editor-hover-row + .ws-editor-hover-row {
+  border-top: 1px solid color-mix(in srgb, var(--ws-color-editorHoverWidget-border) 50%, transparent);
+}
+.ws-editor-hover-marker {
+  display: flex;
+  gap: 8px;
+  font-family: var(--ws-font-code);
+}
+.ws-editor-hover-severity {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 18px;
+}
+.ws-editor-hover-severity svg {
+  width: 16px;
+  height: 16px;
+}
+.ws-editor-hover-severity.ws-error {
+  color: var(--ws-color-problemsErrorIcon-foreground);
+}
+.ws-editor-hover-severity.ws-warning {
+  color: var(--ws-color-problemsWarningIcon-foreground);
+}
+.ws-editor-hover-severity.ws-info,
+.ws-editor-hover-severity.ws-hint {
+  color: var(--ws-color-problemsInfoIcon-foreground);
+}
+.ws-editor-hover-message {
+  white-space: pre-wrap;
+}
+.ws-editor-hover-source {
+  padding-left: 6px;
+  opacity: 0.6;
+}
+.ws-editor-hover a {
+  color: var(--ws-color-textLink-foreground);
+}
+
+/* Markdown from a language service. */
+.ws-rendered-markdown p,
+.ws-rendered-markdown ul,
+.ws-rendered-markdown ol,
+.ws-rendered-markdown blockquote,
+.ws-rendered-markdown table,
+.ws-rendered-code {
+  margin: 8px 0;
+}
+.ws-rendered-markdown h1,
+.ws-rendered-markdown h2,
+.ws-rendered-markdown h3,
+.ws-rendered-markdown h4,
+.ws-rendered-markdown h5,
+.ws-rendered-markdown h6 {
+  margin: 8px 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+.ws-rendered-markdown > :first-child {
+  margin-top: 0;
+}
+.ws-rendered-markdown > :last-child {
+  margin-bottom: 0;
+}
+.ws-rendered-markdown ul,
+.ws-rendered-markdown ol {
+  padding-left: 20px;
+}
+.ws-rendered-markdown hr {
+  margin: 4px -8px;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--ws-color-editorHoverWidget-border) 50%, transparent);
+}
+.ws-rendered-markdown code {
+  padding: 0 0.4em;
+  border-radius: 3px;
+  background: var(--ws-color-textCodeBlock-background);
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+  font-size: 1em;
+}
+.ws-rendered-code {
+  font-family: var(--ws-font-code);
+  font-size: var(--ws-font-code-size);
+  line-height: 18px;
+  white-space: pre-wrap;
+}
+.ws-rendered-markdown a {
+  color: var(--ws-color-textLink-foreground);
+  text-decoration: none;
+}
+.ws-rendered-markdown a:hover {
+  text-decoration: underline;
+}

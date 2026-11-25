@@ -1,0 +1,8 @@
+[?1034h$ echo one two three[C[C[1@#[1@ [C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K[K[K[K
+$ echo a very long line that has to wrap because it is wider than the eighty col umns there are here[A[C[C[C[C[C[C[Cia very long line that has to wrap because it is wider than the eighty col[1@u[A[C[C[C[C[C[Cna very long line that has to wrap because it is wider than the eighty co[1@l[A[C[C[C[C[C[C[Csa very long line that has to wrap because it is wider than the eighty c[1@o[A[C[C[C[C[C[C[C[Cea very long line that has to wrap because it is wider than the eighty [1@c[A[C[C[C[C[C[C[C[C[Cra very long line that has to wrap because it is wider than the eighty[1@ [A[C[C[C[C[C[C[C[C[C[Cta very long line that has to wrap because it is wider than the eight[1@y[A[C[C[C[C[C[C[C[C[C[C[Cea very long line that has to wrap because it is wider than the eigh[1@t[A[C[C[C[C[C[C[C[C[C[C[C[Cda very long line that has to wrap because it is wider than the eig[1@h[A[C[C[C[C[C[C[C[C[C[C[C[C[C a very long line that has to wrap because it is wider than the ei[1@g[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+
+inserted a very long line that has to wrap because it is wider than the eighty columns there are here
+$ printf "\033[31mred\033[0m \033[1;4mbold\033[0m\n"
+[31mred[0m [1;4mbold[0m
+$ printf "\033[31mred\033[0m \033[1;4mbold\033[0m\n"
+$ 

@@ -1,0 +1,25 @@
+normal 2,10 base 0
+$ PS1="%% "
+% ls
+% for i in 1 2 3; do
+> echo $i
+> done
+1
+2
+3
+% echo no newline at the end | tr -d "\n"
+no newline at the end%                                                          
+% 
+
+
+
+
+
+
+
+
+
+
+
+
+

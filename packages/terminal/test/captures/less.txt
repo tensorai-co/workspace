@@ -1,0 +1,25 @@
+alternate 1,23 base 0
+line 40: 你好 café — short
+line 41: 你好 café — short
+line 42: the quick brown fox jumps over the lazy dog, again and again and again 
+and once more
+line 43: 你好 café — short
+line 44: 你好 café — short
+line 45: 你好 café — short
+line 46: 你好 café — short
+line 47: 你好 café — short
+line 48: 你好 café — short
+line 49: the quick brown fox jumps over the lazy dog, again and again and again 
+and once more
+line 50: 你好 café — short
+line 51: 你好 café — short
+line 52: 你好 café — short
+line 53: 你好 café — short
+line 54: 你好 café — short
+line 55: 你好 café — short
+line 56: the quick brown fox jumps over the lazy dog, again and again and again 
+and once more
+line 57: 你好 café — short
+line 58: 你好 café — short
+line 59: 你好 café — short
+:

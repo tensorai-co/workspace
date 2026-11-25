@@ -1,0 +1,24 @@
+/* Syntax colors, for `paintLine`'s classes: highlight's token types, colored by their TextMate scopes. */
+.ws-syntax .t-keyword { color: var(--ws-token-keyword); }
+.ws-syntax .t-storage { color: var(--ws-token-storage); }
+.ws-syntax .t-modifier { color: var(--ws-token-modifier); }
+.ws-syntax .b-1 { color: var(--ws-bracket-1); }
+.ws-syntax .b-2 { color: var(--ws-bracket-2); }
+.ws-syntax .b-3 { color: var(--ws-bracket-3); }
+.ws-syntax .t-string { color: var(--ws-token-string); }
+.ws-syntax .t-escape { color: var(--ws-token-escape); }
+.ws-syntax .t-number { color: var(--ws-token-number); }
+.ws-syntax .t-comment { color: var(--ws-token-comment); font-style: var(--ws-token-comment-style, normal); }
+.ws-syntax .t-function { color: var(--ws-token-function); }
+.ws-syntax .t-type { color: var(--ws-token-type); }
+.ws-syntax .t-constant { color: var(--ws-token-constant); }
+.ws-syntax .t-builtin { color: var(--ws-token-builtin); }
+.ws-syntax .t-variable { color: var(--ws-token-variable); }
+.ws-syntax .t-property { color: var(--ws-token-property); }
+.ws-syntax .t-tag { color: var(--ws-token-tag); }
+.ws-syntax .t-operator { color: var(--ws-token-operator); }
+.ws-syntax .t-punctuation { color: var(--ws-token-punctuation); }
+.ws-syntax .t-regexp { color: var(--ws-token-regexp); }
+.ws-syntax .t-meta { color: var(--ws-token-meta); }
+.ws-syntax .t-inserted { color: var(--ws-token-inserted); }
+.ws-syntax .t-deleted { color: var(--ws-token-deleted); }

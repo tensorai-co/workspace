@@ -1,0 +1,29 @@
+{
+  "name": "@tensorai-workspace/host",
+  "version": "0.1.0",
+  "description": "The interfaces a host app implements: files and the clipboard.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/host#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/host"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

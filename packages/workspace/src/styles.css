@@ -1,0 +1,682 @@
+/* The full IDE. Colors come only from theme tokens; sizes and places are measured (see the layout check). */
+@import '@tensorai-workspace/theme/styles.css';
+@import '@tensorai-workspace/icons/styles.css';
+@import '@tensorai-workspace/editor/styles.css';
+@import '@tensorai-workspace/explorer/styles.css';
+@import '@tensorai-workspace/markdown/styles.css';
+@import '@tensorai-workspace/overlays/styles.css';
+@import '@tensorai-workspace/split/styles.css';
+@import '@tensorai-workspace/tabs/styles.css';
+@import '@tensorai-workspace/terminal/styles.css';
+
+.ws-workspace {
+  display: grid;
+  grid-template-rows: 35px minmax(0, 1fr) 28px;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ws-color-foreground);
+  background: var(--ws-color-titleBar-activeBackground);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 18.2px;
+}
+
+/* ------------------------------------------------------------------ titlebar */
+
+.ws-titlebar {
+  display: flex;
+  box-sizing: border-box;
+  height: 35px;
+  padding-top: 2px;
+  color: var(--ws-color-titleBar-activeForeground);
+  background: var(--ws-color-titleBar-activeBackground);
+  user-select: none;
+}
+.ws-titlebar-left,
+.ws-titlebar-center,
+.ws-titlebar-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.ws-titlebar-left {
+  width: 20%;
+  flex-grow: 2;
+}
+.ws-titlebar-center {
+  justify-content: center;
+  width: 60%;
+  max-width: fit-content;
+  min-width: 0;
+  margin: 0 10px;
+}
+.ws-titlebar-right {
+  justify-content: flex-end;
+  width: 20%;
+  min-width: min-content;
+  flex-grow: 2;
+}
+.ws-title-actions {
+  display: flex;
+  gap: 4px;
+  padding-right: 4px;
+}
+.ws-title-action {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+.ws-title-action:hover:not(:disabled) {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+.ws-title-action:active:not(:disabled) {
+  background: var(--ws-color-toolbar-activeBackground);
+}
+.ws-title-action:disabled {
+  cursor: default;
+}
+.ws-title-action:focus-visible,
+.ws-command-center-label:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+.ws-command-center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.ws-command-center > .ws-title-action:not(:disabled) {
+  color: var(--ws-color-commandCenter-foreground);
+}
+.ws-command-center-box {
+  display: flex;
+  box-sizing: border-box;
+  width: 38vw;
+  max-width: 600px;
+  min-width: 0;
+  height: 24px;
+  border: 1px solid var(--ws-color-commandCenter-border);
+  border-radius: var(--ws-radius-small);
+}
+.ws-command-center-label {
+  flex: 1;
+  min-width: 0;
+  height: 22px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 3px;
+  outline-offset: -1px;
+  color: var(--ws-color-commandCenter-foreground);
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: left;
+}
+.ws-command-center-label[tabindex='0'] {
+  cursor: pointer;
+}
+.ws-command-center-label > span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ the parts */
+
+.ws-parts {
+  display: flex;
+  min-height: 0;
+  padding: 0 var(--ws-gap) var(--ws-gap);
+}
+.ws-columns {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The floating cards. */
+.ws-part {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--ws-color-surface-border, var(--ws-color-editorWidget-border));
+  border-radius: var(--ws-radius);
+}
+
+/* The activity bar shares a card with the sidebar: its border is the seam. */
+.ws-activitybar {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 44px;
+  height: 100%;
+  padding: 0 3px;
+  overflow: hidden;
+  border: 1px solid var(--ws-color-modernActivityBar-border, var(--ws-color-surface-border));
+  border-radius: var(--ws-radius) 0 0 var(--ws-radius);
+  background: var(--ws-color-activityBar-background);
+}
+.ws-no-sidebar > .ws-activitybar {
+  margin-right: var(--ws-gap);
+  border-radius: var(--ws-radius);
+}
+.ws-activity-menu {
+  flex: none;
+  box-sizing: border-box;
+  height: 39px;
+  padding-top: 3px;
+}
+.ws-activity-views {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 3px 0 auto;
+}
+.ws-activity-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.ws-activity-item,
+.ws-activity-menu-button {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: var(--ws-color-activityBar-inactiveForeground);
+  background: none;
+  cursor: pointer;
+}
+.ws-activity-item > :not(.ws-activity-indicator),
+.ws-activity-menu-button > * {
+  position: relative;
+}
+.ws-activity-indicator,
+.ws-activity-menu-button::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: var(--ws-radius-small);
+}
+.ws-activity-item:hover,
+.ws-activity-item.ws-checked {
+  color: var(--ws-color-modernActivityBarItem-activeForeground, var(--ws-color-activityBar-foreground));
+}
+.ws-activity-item:hover > .ws-activity-indicator {
+  background: var(--ws-color-modernActivityBarItem-hoverBackground);
+}
+.ws-activity-item.ws-checked > .ws-activity-indicator {
+  background: var(--ws-color-activityBar-activeBackground);
+}
+.ws-activity-menu-button:hover::before {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+.ws-activity-item:focus-visible,
+.ws-activity-menu-button:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+
+.ws-sidebar {
+  border-left-color: transparent;
+  border-radius: 0 var(--ws-radius) var(--ws-radius) 0;
+  color: var(--ws-color-sideBar-foreground);
+  background: var(--ws-color-sideBar-background);
+}
+.ws-sidebar-title {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 32px;
+  padding: 0 4px 0 12px;
+}
+.ws-sidebar-title > h2 {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--ws-color-sideBarTitle-foreground);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 32px;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+.ws-sidebar-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.ws-sidebar-view[hidden] {
+  display: none;
+}
+.ws-sidebar-view > * {
+  flex: 1;
+  min-height: 0;
+}
+
+.ws-editors {
+  background: var(--ws-color-editor-background);
+}
+.ws-panel {
+  color: var(--ws-color-panelTitle-inactiveForeground);
+  background: var(--ws-color-panel-background);
+}
+.ws-auxiliarybar {
+  color: var(--ws-color-sideBar-foreground);
+  background: var(--ws-color-sideBar-background);
+}
+
+/* The secondary side bar's title: its tab joined to what's below, as the panel's is. */
+.ws-part-title {
+  --ws-part-line: var(--ws-color-panelSection-border);
+  --ws-part-surface: var(--ws-color-sideBar-background);
+  --ws-joined-surface: var(--ws-part-surface);
+  --ws-joined-line: var(--ws-part-line);
+  display: flex;
+  flex: none;
+  height: 32px;
+  overflow: hidden;
+  box-shadow: inset 0 -1px 0 var(--ws-part-line);
+}
+.ws-part-tab {
+  position: relative;
+  flex: none;
+  padding: 0 16px;
+  color: var(--ws-color-panelTitle-activeForeground);
+  line-height: 24px;
+}
+.ws-part-tab > span {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-top: 4px;
+}
+.ws-part-actions {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  align-items: center;
+  height: 32px;
+  margin-left: auto;
+  padding-right: 4px;
+}
+.ws-part-separator {
+  width: 1px;
+  height: 16px;
+  margin-left: 4px;
+  background: var(--ws-color-disabledForeground);
+}
+.ws-part-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* ------------------------------------------------------------------ editors */
+
+.ws-group {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.ws-group-empty {
+  flex: 1;
+  outline: none;
+}
+.ws-breadcrumbs {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px 0 16px;
+  overflow: hidden;
+  color: var(--ws-color-breadcrumb-foreground);
+  background: var(--ws-color-breadcrumb-background);
+  font-size: 13px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+.ws-crumb {
+  display: inline-flex;
+  align-items: center;
+}
+.ws-editor-host {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------ status bar */
+
+.ws-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 28px;
+  padding: 2px 12px;
+  overflow: hidden;
+  color: var(--ws-color-statusBar-foreground);
+  background: var(--ws-color-statusBar-background);
+  font-size: 12px;
+  user-select: none;
+}
+.ws-status-left,
+.ws-status-right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 24px;
+}
+.ws-status-item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  box-sizing: border-box;
+  height: 24px;
+  margin: 0 3px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: inherit;
+  background: none;
+  font: inherit;
+  line-height: 22px;
+  white-space: pre;
+}
+.ws-status-left > .ws-status-item:first-child,
+.ws-status-right > .ws-status-item:last-child,
+.ws-status-item.ws-status-remote {
+  margin: 0;
+  padding: 0 6px;
+}
+.ws-status-command {
+  cursor: pointer;
+}
+/* Its spaces are part of it: "⊗ 0 ⚠ 0". */
+.ws-status-problems {
+  white-space: pre;
+}
+.ws-status-command:hover {
+  color: var(--ws-color-statusBarItem-hoverForeground);
+  background: var(--ws-color-statusBarItem-hoverBackground);
+}
+.ws-status-command:active {
+  background: var(--ws-color-statusBarItem-activeBackground);
+}
+.ws-status-command:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+.ws-status-remote {
+  color: var(--ws-color-statusBarItem-remoteForeground);
+  background: var(--ws-color-statusBarItem-remoteBackground);
+}
+.ws-status-remote.ws-status-command:hover {
+  color: var(--ws-color-statusBarItem-remoteHoverForeground, var(--ws-color-statusBarItem-hoverForeground));
+  background: var(--ws-color-statusBarItem-remoteHoverBackground, var(--ws-color-statusBarItem-hoverBackground));
+}
+
+.ws-toast {
+  position: fixed;
+  z-index: 10;
+  right: 12px;
+  bottom: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--ws-color-notifications-border);
+  border-radius: var(--ws-radius);
+  background: var(--ws-color-notifications-background);
+  box-shadow: var(--ws-shadow);
+}
+
+/* ------------------------------------------------------------------ quick input */
+
+/* The quick input, measured: 6px from the top of the window (over the titlebar, as with the command center),
+   centered, 62% of the window's width up to 600px. */
+.ws-workspace {
+  position: relative;
+}
+.ws-quick {
+  position: absolute;
+  z-index: 30;
+  top: 6px;
+  /* Its place is rounded to whole pixels. */
+  left: round(calc(50% - min(31%, 300px)), 1px);
+  width: min(62%, 600px);
+  overflow: hidden;
+  border: 1px solid var(--ws-color-widget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-quickInput-foreground);
+  background: var(--ws-color-quickInput-background);
+  box-shadow: var(--ws-shadow-dialog);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 18.2px;
+  animation: ws-quick-open 250ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+@keyframes ws-quick-open {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ws-quick {
+    animation: none;
+  }
+}
+.ws-quick-header {
+  display: flex;
+  padding: 6px 6px 4px;
+}
+.ws-quick-filter {
+  display: flex;
+  flex: 1;
+  box-sizing: border-box;
+  height: 25px;
+  border: 1px solid var(--ws-color-input-border);
+  border-radius: 4px;
+  background: var(--ws-color-input-background);
+}
+.ws-quick-filter:focus-within {
+  outline: 1px solid var(--ws-color-focusBorder);
+  outline-offset: -1px;
+}
+.ws-quick-input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  height: 23px;
+  padding: 4px 6px;
+  border: 0;
+  outline: none;
+  color: var(--ws-color-input-foreground);
+  background: none;
+  font: inherit;
+}
+.ws-quick-input::placeholder {
+  color: var(--ws-color-input-placeholderForeground);
+}
+.ws-quick-progress {
+  height: 2px;
+}
+.ws-quick-list {
+  box-sizing: content-box;
+  padding: 0 6px 7px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 22px;
+  scrollbar-width: thin;
+}
+.ws-quick-row {
+  height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.ws-quick-row:hover:not(.ws-focused) {
+  background: var(--ws-color-list-hoverBackground);
+}
+.ws-quick-row.ws-focused {
+  color: var(--ws-color-quickInputList-focusForeground);
+  background: var(--ws-color-quickInputList-focusBackground);
+}
+.ws-quick-row.ws-disabled {
+  cursor: default;
+}
+.ws-quick-row.ws-disabled:hover {
+  background: none;
+}
+.ws-quick-entry {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 4px;
+  overflow: hidden;
+}
+.ws-quick-entry.ws-border {
+  border-top: 1px solid var(--ws-color-pickerGroup-border);
+}
+.ws-quick-row.ws-focused .ws-quick-entry.ws-border {
+  border-color: transparent;
+}
+.ws-quick-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  margin-left: 5px;
+}
+.ws-quick-label {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  margin-left: 5px;
+  overflow: hidden;
+  white-space: pre;
+}
+.ws-quick-icon + .ws-quick-label {
+  margin-left: 6px;
+}
+.ws-quick-name {
+  flex: none;
+}
+.ws-quick-description {
+  margin-left: 0.5em;
+  overflow: hidden;
+  opacity: 0.95;
+  font-size: 0.9em;
+  text-overflow: ellipsis;
+}
+.ws-quick-description {
+  color: var(--ws-color-descriptionForeground);
+}
+.ws-quick-row.ws-focused .ws-quick-description {
+  color: inherit;
+}
+.ws-quick-highlight {
+  color: var(--ws-color-list-highlightForeground);
+  font-weight: bold;
+}
+.ws-quick-row.ws-focused .ws-quick-highlight {
+  color: var(--ws-color-quickInputList-focusHighlightForeground);
+}
+.ws-quick-separator {
+  flex: none;
+  margin-right: 4px;
+  color: var(--ws-color-descriptionForeground);
+  font-size: 11px;
+}
+.ws-quick-row.ws-focused .ws-quick-separator {
+  color: inherit;
+}
+
+/* Keys, each in its own cap. */
+.ws-keybinding {
+  display: flex;
+  flex: none;
+  align-items: center;
+  line-height: 10px;
+}
+.ws-keybinding-chord + .ws-keybinding-chord {
+  margin-left: 6px;
+}
+.ws-keybinding-chord {
+  display: flex;
+}
+.ws-keybinding-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 12px;
+  margin: 0 2px;
+  padding: 3px 5px;
+  border: 1px solid var(--ws-color-keybindingLabel-border);
+  border-bottom-color: var(--ws-color-keybindingLabel-bottomBorder);
+  border-radius: 3px;
+  color: var(--ws-color-keybindingLabel-foreground);
+  background: var(--ws-color-keybindingLabel-background);
+  box-shadow: inset 0 -1px 0 var(--ws-color-widget-shadow);
+  font: inherit;
+  font-size: 11px;
+  line-height: 10px;
+}
+.ws-keybinding-chord > .ws-keybinding-key:first-child {
+  margin-left: 0;
+}
+.ws-keybinding-chord > .ws-keybinding-key:last-child {
+  margin-right: 0;
+}
+.ws-quick-row.ws-focused .ws-keybinding-key,
+.ws-quick-row:hover .ws-keybinding-key {
+  border-color: color-mix(in srgb, currentColor 30%, transparent);
+  color: inherit;
+  background: none;
+}
+
+/* ------------------------------------------------------------------ flat layout */
+
+/* The parts meet edge to edge, with lines between them in the color of the cards' edges. */
+[data-layout='flat'] {
+  --ws-flat-line: var(--ws-color-surface-border, var(--ws-color-editorGroup-border));
+}
+[data-layout='flat'] .ws-part {
+  border: 0;
+}
+[data-layout='flat'] .ws-activitybar {
+  border: 0;
+  border-right: 1px solid var(--ws-flat-line);
+}
+[data-layout='flat'] .ws-parts {
+  border-top: 1px solid var(--ws-flat-line);
+}
+[data-layout='flat'] .ws-statusbar {
+  border-top: 1px solid var(--ws-flat-line);
+}
+[data-layout='flat'] .ws-split:not(.ws-gaps) > .ws-pane:not(.ws-first)::before {
+  background: var(--ws-flat-line);
+}

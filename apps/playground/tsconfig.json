@@ -1,0 +1,64 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "types": [
+      "vite/client",
+      "node"
+    ]
+  },
+  "include": [
+    "src",
+    "shell",
+    "vite.config.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/text"
+    },
+    {
+      "path": "../../packages/languages"
+    },
+    {
+      "path": "../../packages/theme"
+    },
+    {
+      "path": "../../packages/icons"
+    },
+    {
+      "path": "../../packages/editor"
+    },
+    {
+      "path": "../../packages/host"
+    },
+    {
+      "path": "../../packages/testing"
+    },
+    {
+      "path": "../../packages/tree"
+    },
+    {
+      "path": "../../packages/explorer"
+    },
+    {
+      "path": "../../packages/tabs"
+    },
+    {
+      "path": "../../packages/split"
+    },
+    {
+      "path": "../../packages/overlays"
+    },
+    {
+      "path": "../../packages/terminal"
+    },
+    {
+      "path": "../../packages/markdown"
+    },
+    {
+      "path": "../../packages/workspace"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+/* Design tokens: the light and dark color themes, plus fonts, sizes and shapes. */
+@import './data/themes.css';
+@import './syntax.css';
+@import './shapes.css';
+
+:root {
+  /* The UI font stack, per platform. */
+  --ws-font-ui: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+  /* The editor font, per platform (Menlo on macOS, Consolas on Windows, Droid Sans Mono on Linux). */
+  --ws-font-code: Menlo, Monaco, Consolas, 'Droid Sans Mono', 'Courier New', monospace;
+  --ws-font-code-size: 12px;
+  --ws-line-height: 18px;
+  --ws-radius: 8px;
+  --ws-radius-small: 4px;
+  --ws-gap: 4px;
+}
+
+/* The flat layout: parts edge to edge with lines between, and square corners. */
+[data-layout='flat'] {
+  --ws-radius: 0px;
+  --ws-radius-small: 0px;
+  --ws-gap: 0px;
+}
+
+/* Colors the theme files leave out, and the color scheme that light-dark() follows. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --ws-color-tree-indentGuidesStroke: #a9a9a9;
+  --ws-color-tree-inactiveIndentGuidesStroke: rgba(169, 169, 169, 0.4);
+  --ws-color-terminal-ansiBlack: #000000;
+  --ws-color-terminal-ansiRed: #cd3131;
+  --ws-color-terminal-ansiGreen: #107c10;
+  --ws-color-terminal-ansiYellow: #949800;
+  --ws-color-terminal-ansiBlue: #0451a5;
+  --ws-color-terminal-ansiMagenta: #bc05bc;
+  --ws-color-terminal-ansiCyan: #0598bc;
+  --ws-color-terminal-ansiWhite: #555555;
+  --ws-color-terminal-ansiBrightBlack: #666666;
+  --ws-color-terminal-ansiBrightRed: #f14c4c;
+  --ws-color-terminal-ansiBrightGreen: #14ce14;
+  --ws-color-terminal-ansiBrightYellow: #b5ba00;
+  --ws-color-terminal-ansiBrightBlue: #3b8eea;
+  --ws-color-terminal-ansiBrightMagenta: #d670d6;
+  --ws-color-terminal-ansiBrightCyan: #29b8db;
+  --ws-color-terminal-ansiBrightWhite: #a5a5a5;
+  --ws-color-editorGhostText-foreground: rgba(0, 0, 0, 0.47);
+  --ws-color-inlineEdit-originalChangedTextBackground: rgba(173, 7, 7, 0.12);
+  --ws-color-inlineEdit-modifiedChangedTextBackground: rgba(88, 124, 12, 0.1);
+  --ws-color-inlineEdit-gutterIndicator-background: rgba(95, 95, 95, 0.09);
+  --ws-color-inlineEdit-gutterIndicator-primaryBackground: rgba(0, 105, 204, 0.5);
+  --ws-color-inputOption-hoverBackground: rgba(184, 184, 184, 0.31);
+  --ws-color-editor-foldBackground: rgba(0, 105, 204, 0.07);
+  --ws-color-editor-foldPlaceholderForeground: #808080;
+  --ws-color-keybindingLabel-background: rgba(221, 221, 221, 0.4);
+  --ws-color-keybindingLabel-border: rgba(204, 204, 204, 0.4);
+  --ws-color-keybindingLabel-bottomBorder: rgba(187, 187, 187, 0.4);
+  --ws-color-editorError-foreground: #e51400;
+  --ws-color-editorWarning-foreground: #bf8803;
+  --ws-color-editorInfo-foreground: #0063d3;
+  --ws-color-editorHint-foreground: #6c6c6c;
+  --ws-color-problemsErrorIcon-foreground: #e51400;
+  --ws-color-problemsInfoIcon-foreground: #0063d3;
+  --ws-color-editorHoverWidget-foreground: #202020;
+  --ws-color-editorHoverWidget-highlightForeground: #0069cc;
+  --ws-color-editorHoverWidget-statusBarBackground: #e8e8f6;
+  --ws-color-editorSuggestWidget-focusHighlightForeground: #0069cc;
+  --ws-color-symbolIcon-methodForeground: #652d90;
+  --ws-color-symbolIcon-functionForeground: #652d90;
+  --ws-color-symbolIcon-constructorForeground: #652d90;
+  --ws-color-symbolIcon-fieldForeground: #007acc;
+  --ws-color-symbolIcon-variableForeground: #007acc;
+  --ws-color-symbolIcon-interfaceForeground: #007acc;
+  --ws-color-symbolIcon-enumeratorMemberForeground: #007acc;
+  --ws-color-symbolIcon-classForeground: #d67e00;
+  --ws-color-symbolIcon-enumeratorForeground: #d67e00;
+  --ws-color-symbolIcon-eventForeground: #d67e00;
+  --ws-shadow: 0 0 12px rgba(0, 0, 0, 0.14);
+  --ws-shadow-dialog: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+[data-theme='dark'] {
+  color-scheme: dark;
+  --ws-color-tree-indentGuidesStroke: #585858;
+  --ws-color-tree-inactiveIndentGuidesStroke: rgba(88, 88, 88, 0.4);
+  --ws-color-problemsWarningIcon-foreground: #cca700;
+  --ws-color-toolbar-hoverBackground: rgba(90, 93, 94, 0.31);
+  --ws-color-editorGhostText-foreground: rgba(255, 255, 255, 0.34);
+  --ws-color-inlineEdit-originalChangedTextBackground: rgba(244, 112, 103, 0.24);
+  --ws-color-inlineEdit-modifiedChangedTextBackground: rgba(87, 171, 90, 0.21);
+  --ws-color-inlineEdit-gutterIndicator-background: rgba(25, 26, 27, 0.5);
+  --ws-color-inlineEdit-gutterIndicator-primaryBackground: rgba(41, 122, 160, 0.4);
+  --ws-color-inputOption-hoverBackground: rgba(90, 93, 94, 0.5);
+  --ws-color-editor-foldBackground: rgba(39, 103, 130, 0.26);
+  --ws-color-editor-foldPlaceholderForeground: #808080;
+  --ws-color-keybindingLabel-background: rgba(128, 128, 128, 0.17);
+  --ws-color-keybindingLabel-border: rgba(51, 51, 51, 0.6);
+  --ws-color-keybindingLabel-bottomBorder: rgba(68, 68, 68, 0.6);
+  --ws-color-editorError-foreground: #f14c4c;
+  --ws-color-editorWarning-foreground: #cca700;
+  --ws-color-editorInfo-foreground: #59a4f9;
+  --ws-color-editorHint-foreground: rgba(238, 238, 238, 0.7);
+  --ws-color-problemsErrorIcon-foreground: #f14c4c;
+  --ws-color-problemsInfoIcon-foreground: #59a4f9;
+  --ws-color-editorHoverWidget-foreground: #bfbfbf;
+  --ws-color-editorHoverWidget-highlightForeground: #48a0c7;
+  --ws-color-editorHoverWidget-statusBarBackground: #262829;
+  --ws-color-editorSuggestWidget-focusHighlightForeground: #48a0c7;
+  --ws-color-symbolIcon-methodForeground: #b180d7;
+  --ws-color-symbolIcon-functionForeground: #b180d7;
+  --ws-color-symbolIcon-constructorForeground: #b180d7;
+  --ws-color-symbolIcon-fieldForeground: #75beff;
+  --ws-color-symbolIcon-variableForeground: #75beff;
+  --ws-color-symbolIcon-interfaceForeground: #75beff;
+  --ws-color-symbolIcon-enumeratorMemberForeground: #75beff;
+  --ws-color-symbolIcon-classForeground: #ee9d28;
+  --ws-color-symbolIcon-enumeratorForeground: #ee9d28;
+  --ws-color-symbolIcon-eventForeground: #ee9d28;
+  --ws-color-terminal-ansiBlack: #000000;
+  --ws-color-terminal-ansiRed: #cd3131;
+  --ws-color-terminal-ansiGreen: #0dbc79;
+  --ws-color-terminal-ansiYellow: #e5e510;
+  --ws-color-terminal-ansiBlue: #2472c8;
+  --ws-color-terminal-ansiMagenta: #bc3fbc;
+  --ws-color-terminal-ansiCyan: #11a8cd;
+  --ws-color-terminal-ansiWhite: #e5e5e5;
+  --ws-color-terminal-ansiBrightBlack: #666666;
+  --ws-color-terminal-ansiBrightRed: #f14c4c;
+  --ws-color-terminal-ansiBrightGreen: #23d18b;
+  --ws-color-terminal-ansiBrightYellow: #f5f543;
+  --ws-color-terminal-ansiBrightBlue: #3b8eea;
+  --ws-color-terminal-ansiBrightMagenta: #d670d6;
+  --ws-color-terminal-ansiBrightCyan: #29b8db;
+  --ws-color-terminal-ansiBrightWhite: #e5e5e5;
+}

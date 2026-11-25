@@ -1,0 +1,243 @@
+/* The tree. Colors come only from theme tokens; sizes are measured (see the layout check). */
+@import '@tensorai-workspace/icons/styles.css';
+@import '@tensorai-workspace/overlays/styles.css';
+
+.ws-tree {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  color: var(--ws-color-foreground);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 22px;
+  -webkit-font-smoothing: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ws-tree-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: none;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.ws-tree-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.ws-tree-rows {
+  position: relative;
+  min-height: 100%;
+}
+
+.ws-tree-row {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  height: 22px;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  cursor: pointer;
+}
+.ws-tree-row:hover:not(.ws-selected, .ws-focused) {
+  color: var(--ws-color-list-hoverForeground);
+  background: var(--ws-color-list-hoverBackground);
+}
+
+/* While the tree doesn't have the focus, only the selection shows. */
+.ws-tree-row.ws-selected {
+  color: var(--ws-color-list-inactiveSelectionForeground);
+  background: var(--ws-color-list-inactiveSelectionBackground);
+}
+.ws-tree-scroll:focus .ws-tree-row.ws-focused {
+  color: var(--ws-color-list-focusForeground);
+  background: var(--ws-color-list-focusBackground);
+  outline: 1px solid var(--ws-color-list-focusOutline);
+}
+.ws-tree-scroll:focus .ws-tree-row.ws-selected {
+  color: var(--ws-color-list-activeSelectionForeground);
+  background: var(--ws-color-list-activeSelectionBackground);
+}
+.ws-tree-scroll:focus .ws-tree-row.ws-focused.ws-selected {
+  outline-color: var(--ws-color-list-focusAndSelectionOutline, var(--ws-color-list-focusOutline));
+}
+/* A context menu takes the focus; the row it's for keeps its outline. */
+.ws-tree-scroll.ws-menu-open:not(:focus) .ws-tree-row.ws-focused {
+  outline: 1px solid var(--ws-color-list-focusOutline);
+}
+
+.ws-tree-indent {
+  position: absolute;
+  top: 0;
+  display: flex;
+  height: 100%;
+  pointer-events: none;
+}
+.ws-tree-guide {
+  box-sizing: border-box;
+  width: 8px;
+  height: 100%;
+  border-left: 1px solid var(--ws-color-tree-inactiveIndentGuidesStroke);
+  opacity: 0;
+  transition: opacity 0.1s linear;
+}
+.ws-tree:hover .ws-tree-guide {
+  opacity: 1;
+}
+.ws-tree-guide.ws-active {
+  border-color: var(--ws-color-tree-indentGuidesStroke);
+  opacity: 1;
+}
+
+.ws-tree-twistie {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--ws-color-icon-foreground);
+  transform: translateX(3px);
+}
+.ws-tree-twistie.ws-expandable {
+  width: 16px;
+  padding-right: 6px;
+}
+.ws-tree-twistie.ws-collapsed > .ws-codicon {
+  transform: rotate(-90deg);
+}
+.ws-tree-twistie.ws-loading > .ws-codicon {
+  animation: ws-tree-spin 1.5s steps(30) infinite;
+}
+@keyframes ws-tree-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.ws-tree-scroll:focus .ws-focused > .ws-tree-twistie {
+  color: var(--ws-color-list-focusForeground);
+}
+.ws-tree-scroll:focus .ws-selected > .ws-tree-twistie {
+  color: var(--ws-color-list-activeSelectionIconForeground);
+}
+
+.ws-tree-content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+.ws-tree-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+}
+
+/* Naming a row in place. */
+.ws-tree-row.ws-editing {
+  z-index: 2;
+  cursor: default;
+}
+.ws-tree-edit {
+  position: relative;
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 22px;
+  border: 1px solid var(--ws-color-input-border);
+  border-radius: var(--ws-radius-small);
+  outline: 1px solid var(--ws-color-focusBorder);
+  outline-offset: -1px;
+  color: var(--ws-color-input-foreground);
+  background: var(--ws-color-input-background);
+}
+.ws-tree-edit:is(.ws-info, .ws-warning, .ws-error) {
+  outline: none;
+}
+.ws-tree-edit.ws-info {
+  border-color: var(--ws-color-inputValidation-infoBorder);
+}
+.ws-tree-edit.ws-warning {
+  border-color: var(--ws-color-inputValidation-warningBorder);
+}
+.ws-tree-edit.ws-error {
+  border-color: var(--ws-color-inputValidation-errorBorder);
+}
+.ws-tree-edit > input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  color: inherit;
+  background: none;
+  font: inherit;
+  line-height: normal;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.ws-tree-message {
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  box-sizing: border-box;
+  padding: 0.4em;
+  border: 1px solid;
+  font-size: 12px;
+  line-height: 17px;
+  overflow-wrap: break-word;
+}
+.ws-tree-message.ws-above {
+  top: auto;
+  bottom: 100%;
+}
+.ws-info > .ws-tree-message {
+  border-color: var(--ws-color-inputValidation-infoBorder);
+  color: var(--ws-color-inputValidation-infoForeground);
+  background: var(--ws-color-inputValidation-infoBackground);
+}
+.ws-warning > .ws-tree-message {
+  border-color: var(--ws-color-inputValidation-warningBorder);
+  color: var(--ws-color-inputValidation-warningForeground);
+  background: var(--ws-color-inputValidation-warningBackground);
+}
+.ws-error > .ws-tree-message {
+  border-color: var(--ws-color-inputValidation-errorBorder);
+  color: var(--ws-color-inputValidation-errorForeground);
+  background: var(--ws-color-inputValidation-errorBackground);
+}
+
+.ws-tree-scrollbar {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  opacity: 0;
+  transition: opacity 0.8s linear;
+}
+.ws-tree:hover > .ws-tree-scrollbar,
+.ws-tree-scrollbar.ws-active {
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.ws-tree-slider {
+  width: 100%;
+  border-radius: 4px;
+  background: var(--ws-color-scrollbarSlider-background);
+}
+.ws-tree-slider:hover {
+  background: var(--ws-color-scrollbarSlider-hoverBackground);
+}
+.ws-active > .ws-tree-slider {
+  background: var(--ws-color-scrollbarSlider-activeBackground);
+}

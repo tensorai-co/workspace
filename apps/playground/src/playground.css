@@ -1,0 +1,125 @@
+/* The page around the workspace, and the secondary side bar's list of commands. */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.commands {
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+}
+.commands button {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 12px;
+  border: 0;
+  color: var(--ws-color-foreground);
+  background: none;
+  font: inherit;
+  line-height: 22px;
+  text-align: left;
+  cursor: pointer;
+}
+.commands button:hover {
+  background: var(--ws-color-list-hoverBackground);
+}
+.commands span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.commands kbd {
+  flex: none;
+  color: var(--ws-color-descriptionForeground);
+  font: inherit;
+}
+
+/* The appearance view. */
+.appearance {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 20px 16px;
+  color: var(--ws-color-foreground);
+  font: inherit;
+}
+.appearance fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.appearance legend,
+.appearance label {
+  font-weight: 600;
+}
+.appearance fieldset label,
+.appearance-check {
+  font-weight: normal;
+}
+.appearance legend {
+  margin-bottom: 4px;
+  padding: 0;
+}
+.appearance > label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.appearance > .appearance-check {
+  flex-direction: row;
+  align-items: center;
+}
+.appearance output {
+  color: var(--ws-color-descriptionForeground);
+  font-weight: normal;
+}
+.appearance select {
+  padding: 2px 4px;
+  border: 1px solid var(--ws-color-dropdown-border, var(--ws-color-input-border));
+  border-radius: var(--ws-radius-small);
+  color: var(--ws-color-dropdown-foreground, var(--ws-color-foreground));
+  background: var(--ws-color-dropdown-background, var(--ws-color-input-background));
+  font: inherit;
+}
+.appearance input[type='range'] {
+  accent-color: var(--ws-color-focusBorder);
+}
+.appearance-swatches {
+  display: flex;
+  gap: 6px;
+}
+.appearance-swatches button {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid var(--ws-color-input-border, var(--ws-color-editorGroup-border));
+  border-radius: 50%;
+  cursor: pointer;
+}
+.appearance-swatches button[aria-pressed='true'] {
+  outline: 2px solid var(--ws-color-foreground);
+  outline-offset: 1px;
+}
+.appearance-reset {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  color: var(--ws-color-button-foreground);
+  background: var(--ws-color-button-background);
+  font: inherit;
+  cursor: pointer;
+}

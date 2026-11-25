@@ -1,0 +1,5 @@
+export * from './core/index.js'
+export { Workspace, type AuxiliaryBarContent, type WorkspaceApi, type WorkspaceProps, type WorkspaceSlots } from './react/Workspace.js'
+export { ActivityBar, type ActivityAction, type ActivityBarProps, type ViewDescriptor } from './react/ActivityBar.js'
+export { StatusItem, type StatusItemProps } from './react/StatusBar.js'
+export { Titlebar, type TitlebarProps } from './react/Titlebar.js'

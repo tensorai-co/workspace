@@ -1,0 +1,25 @@
+normal 2,5 base 0
+$ echo before
+before
+$ vim -n -u NONE -N code.py
+$ echo after
+after
+$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

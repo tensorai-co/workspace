@@ -1,0 +1,277 @@
+/* The Markdown preview: the values of the preview styles (extensions/markdown-language-features/media/markdown.css)
+   and of the styles every webview starts from. Colors come only from theme tokens. */
+
+.ws-markdown {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  container-type: size;
+  outline: none;
+  background: var(--ws-color-editor-background);
+  scrollbar-color: var(--ws-color-scrollbarSlider-background) var(--ws-color-editor-background);
+  --ws-md-faint: light-dark(rgba(0, 0, 0, 0.18), rgba(255, 255, 255, 0.18));
+}
+
+.ws-markdown-body {
+  box-sizing: border-box;
+  padding: 14px 52px 0;
+  color: var(--ws-color-editor-foreground);
+  font-family: var(--ws-markdown-font, -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif);
+  font-size: var(--ws-markdown-font-size, 14px);
+  font-weight: normal;
+  line-height: var(--ws-markdown-line-height, 22px);
+  letter-spacing: normal;
+  text-align: start;
+  overflow-wrap: break-word;
+  user-select: text;
+  cursor: auto;
+  -webkit-font-smoothing: auto;
+}
+/* The last line can scroll to the top. */
+.ws-md-beyond {
+  margin-bottom: calc(100cqh - 22px);
+}
+
+.ws-markdown-body :is(h1, h2, h3, h4, h5, h6, p, ol, ul, pre) {
+  margin-top: 0;
+}
+.ws-markdown-body :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.ws-markdown-body h1 {
+  margin-top: 0;
+  padding-bottom: 0.3em;
+  border: 0 solid var(--ws-md-faint);
+  border-bottom-width: 1px;
+  font-size: 2em;
+}
+.ws-markdown-body h2 {
+  padding-bottom: 0.3em;
+  border: 0 solid var(--ws-md-faint);
+  border-bottom-width: 1px;
+  font-size: 1.5em;
+}
+.ws-markdown-body h3 {
+  font-size: 1.25em;
+}
+.ws-markdown-body h4 {
+  font-size: 1em;
+}
+.ws-markdown-body h5 {
+  font-size: 0.875em;
+}
+.ws-markdown-body h6 {
+  font-size: 0.85em;
+}
+
+.ws-markdown-body p {
+  margin-bottom: 16px;
+}
+.ws-markdown-body li p {
+  margin-bottom: 0.7em;
+}
+.ws-markdown-body :is(ul, ol) {
+  margin-bottom: 0.7em;
+}
+.ws-markdown-body :is(ul, ol) :is(ul, ol):first-child {
+  margin-bottom: 0;
+}
+.ws-markdown-body :is(sub, sup) {
+  line-height: 0;
+}
+
+/* A task's box goes in the bullet's place. */
+.ws-md-task {
+  list-style: none;
+}
+.ws-md-task input {
+  margin: 0 0 0 -1.4em;
+  vertical-align: -1px;
+}
+
+.ws-markdown-body img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.ws-markdown-body a {
+  color: var(--ws-color-textLink-foreground);
+  text-decoration: none;
+}
+.ws-markdown-body a:not([href], .ws-md-link) {
+  color: inherit;
+}
+.ws-md-link {
+  cursor: pointer;
+}
+.ws-markdown-body a:is([href], .ws-md-link):hover {
+  color: var(--ws-color-textLink-activeForeground);
+  text-decoration: underline;
+}
+.ws-markdown-body a:focus {
+  outline: 1px solid -webkit-focus-ring-color;
+  outline-offset: -1px;
+}
+.ws-markdown-body a code {
+  color: var(--ws-color-textPreformat-foreground);
+  text-decoration: underline;
+}
+
+.ws-markdown-body hr {
+  height: 1px;
+  border: 0 solid var(--ws-md-faint);
+  border-bottom-width: 1px;
+}
+
+.ws-markdown-body table {
+  margin-bottom: 0.7em;
+  border-collapse: collapse;
+}
+.ws-markdown-body :is(th, td) {
+  padding: 5px 10px;
+  border: 0 solid var(--ws-md-faint);
+}
+.ws-markdown-body th {
+  border-color: light-dark(rgba(0, 0, 0, 0.69), rgba(255, 255, 255, 0.69));
+  border-bottom-width: 1px;
+  text-align: left;
+}
+.ws-markdown-body :is(th, td)[align='center'] {
+  text-align: center;
+}
+.ws-markdown-body :is(th, td)[align='right'] {
+  text-align: right;
+}
+.ws-markdown-body table > tbody > tr + tr > td {
+  border-top-width: 1px;
+}
+
+.ws-markdown-body blockquote {
+  margin: 0;
+  padding: 0 16px 0 10px;
+  border: 0 solid var(--ws-color-textBlockQuote-border);
+  border-left-width: 5px;
+  border-radius: 2px;
+  background: var(--ws-color-textBlockQuote-background);
+}
+
+.ws-markdown-body code {
+  padding: 1px 3px;
+  border-radius: 4px;
+  color: var(--ws-color-textPreformat-foreground);
+  background-color: var(--ws-color-textPreformat-background);
+  font-family: var(--ws-font-code);
+  font-size: 1em;
+  line-height: 1.357em;
+}
+.ws-markdown-body pre {
+  position: relative;
+  padding: 16px;
+  border: 1px solid var(--ws-color-widget-border);
+  border-radius: 3px;
+  overflow: auto;
+  background-color: var(--ws-color-textCodeBlock-background);
+}
+.ws-markdown-body pre code {
+  display: inline-block;
+  padding: 0;
+  color: var(--ws-color-editor-foreground);
+  background: none;
+  tab-size: 4;
+}
+.ws-md-wrap pre {
+  white-space: pre-wrap;
+}
+
+.ws-markdown-body kbd {
+  padding: 1px 3px;
+  border: 1px solid var(--ws-color-keybindingLabel-border, light-dark(rgba(204, 204, 204, 0.4), rgba(51, 51, 51, 0.6)));
+  border-bottom-color: var(--ws-color-keybindingLabel-bottomBorder, light-dark(rgba(187, 187, 187, 0.4), rgba(68, 68, 68, 0.6)));
+  border-radius: 3px;
+  color: var(--ws-color-keybindingLabel-foreground);
+  background-color: var(--ws-color-keybindingLabel-background, light-dark(rgba(221, 221, 221, 0.4), rgba(128, 128, 128, 0.17)));
+  box-shadow: inset 0 -1px 0 var(--ws-color-widget-shadow, transparent);
+  vertical-align: middle;
+}
+
+.ws-md-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--ws-color-widget-border, rgba(127, 127, 127, 0.35));
+  border-radius: 4px;
+  color: var(--ws-color-editor-foreground);
+  background-color: var(--ws-color-textCodeBlock-background, var(--ws-color-editor-background));
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+pre:hover > .ws-md-copy,
+.ws-md-copy:focus {
+  opacity: 1;
+}
+.ws-md-copy:hover {
+  background-color: var(--ws-color-toolbar-hoverBackground, rgba(90, 93, 94, 0.31));
+}
+.ws-md-copy:active {
+  background-color: var(--ws-color-toolbar-activeBackground, rgba(99, 102, 103, 0.31));
+}
+.ws-md-copy.ws-md-copied {
+  color: var(--ws-color-testing-iconPassed, #73c991);
+  opacity: 1;
+}
+
+/* The block the editor's cursor is in, and the one under the pointer. */
+.ws-md-marks .ws-md-line {
+  position: relative;
+}
+.ws-md-marks .ws-md-line:not(tr, ul, ol):is([data-active], :hover)::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  height: 100%;
+  border-left: 3px solid light-dark(rgba(0, 0, 0, 0.15), rgba(255, 255, 255, 0.4));
+}
+.ws-md-marks .ws-md-line:not(tr, ul, ol):hover::before {
+  border-left-color: light-dark(rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.6));
+}
+.ws-md-marks li.ws-md-line:is([data-active], :hover)::before {
+  left: -30px;
+}
+
+table.ws-md-front.ws-md-front,
+pre.ws-md-front {
+  margin-bottom: 16px;
+}
+.ws-md-front.ws-md-front :is(th, td) {
+  padding: 6px 13px;
+  border: 1px solid var(--ws-color-widget-border, rgba(127, 127, 127, 0.35));
+  text-align: left;
+  vertical-align: top;
+}
+.ws-md-front th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ws-markdown-body .ws-md-front td > ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+/* For the codicon `preview` in a preview's tab: the icon there has its colors in it. */
+.ws-preview-icon {
+  color: light-dark(#424242, #c5c5c5);
+}

@@ -1,0 +1,25 @@
+alternate 0,2 base 0
+  UW PICO 5.09                     File: poem.txt                     Modified  
+
+line 19: 你好 café — short
+line 20: 你好 café — short
+line 21: the quick brown fox jumps over the lazy dog, again and again and again$
+line 22: 你好 café — short
+line 23: 你好 café — short
+line 24: 你好 café — short
+line 25: 你好 café — short
+line 26: 你好 café — short
+line 27: 你好 café — short
+line 28: the quick brown fox jumps over the lazy dog, again and again and again$
+line 29: 你好 café — short
+line 30: 你好 café — short
+line 31: 你好 café — short
+line 32: 你好 café — short
+line 33: 你好 café — short
+line 34: 你好 café — short
+line 35: the quick brown fox jumps over the lazy dog, again and again and again$
+line 36: 你好 café — short
+line 37: 你好 café — short
+
+^G Get Help  ^O WriteOut  ^R Read File ^Y Prev Pg   ^K Cut Text  ^C Cur Pos   
+^X Exit      ^J Justify   ^W Where is  ^V Next Pg   ^U UnCut Text^T To Spell  

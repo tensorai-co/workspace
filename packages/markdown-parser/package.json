@@ -1,0 +1,29 @@
+{
+  "name": "@tensorai-workspace/markdown-parser",
+  "version": "0.1.0",
+  "description": "A Markdown parser: CommonMark with GitHub's tables, task lists, strikethrough and autolinks, to a syntax tree. No DOM.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/markdown-parser#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/markdown-parser"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,298 @@
+/* The tab bar: the connected tabs. Colors come only from theme tokens; sizes are measured. */
+@import '@tensorai-workspace/icons/styles.css';
+@import '@tensorai-workspace/overlays/styles.css';
+
+.ws-tabs {
+  /* The row's background, and what the active tab joins onto. A panel sets its own. */
+  --ws-tab-strip: var(--ws-color-editorGroupHeader-connectedTabsBackground, var(--ws-color-editorGroupHeader-tabsBackground));
+  --ws-tab-surface: var(--ws-color-editor-background);
+  --ws-tab-line: var(--ws-color-editorGroupHeader-tabsBorder, var(--ws-color-tab-border));
+  --ws-joined-surface: var(--ws-tab-surface);
+  --ws-joined-line: var(--ws-tab-line);
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  height: 32px;
+  background: var(--ws-tab-strip);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18.2px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ws-tabs[hidden] {
+  display: none;
+}
+/* The line the row stands on; the active tab covers its part of it. */
+.ws-tabs::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--ws-tab-line);
+  pointer-events: none;
+}
+
+.ws-tabs-scroll {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  overflow: hidden;
+}
+.ws-tabs-list {
+  display: flex;
+  box-sizing: border-box;
+  height: 32px;
+  padding-bottom: 1px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+}
+.ws-tabs-list::-webkit-scrollbar {
+  display: none;
+}
+
+.ws-tab {
+  position: relative;
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  height: 31px;
+  padding: 0 30.5px 0 6px;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -2px;
+  color: var(--ws-color-tab-inactiveForeground);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ws-tab:last-child {
+  margin-right: 8px;
+}
+.ws-tab:hover {
+  color: var(--ws-color-tab-hoverForeground, var(--ws-color-tab-activeForeground));
+}
+.ws-tab.ws-active {
+  color: var(--ws-color-tab-activeForeground);
+}
+.ws-tab:focus {
+  outline: none;
+}
+.ws-tab:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}
+
+/* Behind an inactive tab: nothing to see until the pointer is over it. */
+.ws-tab-fill {
+  position: absolute;
+  z-index: 0;
+  inset: 3.5px 2px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: var(--ws-radius-small);
+  background: var(--ws-tab-strip);
+  pointer-events: none;
+}
+.ws-tab:not(.ws-active):is(:hover, :focus-within) > .ws-tab-fill {
+  inset: 0 2px -1px;
+  background: color-mix(in srgb, var(--ws-color-foreground) 6%, var(--ws-tab-strip));
+}
+
+/* The active tab: the shared joined shape, reaching over the row's bottom line. */
+.ws-tab > .ws-joined {
+  inset: -1px 0;
+}
+.ws-tab:first-child > .ws-joined::before {
+  content: none;
+}
+
+/* Between two inactive tabs. */
+.ws-tab-divider {
+  position: absolute;
+  z-index: 9;
+  top: 50%;
+  left: 0;
+  display: none;
+  width: 1px;
+  height: 16px;
+  background: var(--ws-color-tab-divider, var(--ws-color-tab-border));
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.ws-tab:not(.ws-active) + .ws-tab:not(.ws-active) > .ws-tab-divider {
+  display: block;
+}
+
+.ws-tab-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  height: 24px;
+  margin: 3.5px 0;
+  line-height: 24px;
+}
+.ws-tab-label > .ws-codicon {
+  align-self: center;
+  margin-right: 6px;
+}
+.ws-tab-label > .ws-file-icon {
+  height: 24px;
+}
+.ws-tab-label > .ws-file-icon > svg {
+  top: 2px;
+}
+.ws-tab.ws-preview .ws-tab-name,
+.ws-tab.ws-preview .ws-tab-description {
+  font-style: italic;
+}
+/* Italics lean past their box. */
+.ws-tab.ws-preview .ws-tab-label {
+  padding-right: 1px;
+}
+.ws-tab-name {
+  white-space: pre;
+}
+.ws-tab-description {
+  margin-left: 0.5em;
+  font-size: 0.9em;
+  white-space: pre;
+  opacity: 0.7;
+}
+.ws-tab-badge {
+  margin-left: 5px;
+  font-size: 90%;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.ws-tab-actions {
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  right: 4.5px;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  pointer-events: none;
+}
+.ws-tab:is(.ws-active, .ws-dirty, :hover, :focus-within) > .ws-tab-actions {
+  pointer-events: auto;
+}
+.ws-tab-actions > button {
+  display: block;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: inherit;
+  background: none;
+  opacity: 0;
+  cursor: pointer;
+}
+.ws-tab:is(.ws-active, .ws-dirty, :hover, :focus-within) > .ws-tab-actions > button {
+  opacity: 1;
+}
+.ws-tab-actions > button:hover {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+/* Unsaved changes: a dot, until the pointer is on it. */
+.ws-tab-dot {
+  display: none;
+}
+.ws-tab.ws-dirty button:not(:hover) > .ws-tab-dot {
+  display: block;
+}
+.ws-tab.ws-dirty button:not(:hover) > .ws-tab-close {
+  display: none;
+}
+
+/* Where a dragged tab would land. */
+.ws-tab.ws-drop-before::before,
+.ws-tab.ws-drop-after::after {
+  content: '';
+  position: absolute;
+  z-index: 11;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--ws-color-tab-dragAndDropBorder, var(--ws-color-tab-activeForeground));
+  pointer-events: none;
+}
+.ws-tab.ws-drop-before::before {
+  left: -3px;
+}
+.ws-tab.ws-drop-before:first-child::before {
+  left: 0;
+}
+.ws-tab.ws-drop-after::after {
+  right: -2px;
+}
+
+.ws-tabs-scrollbar {
+  position: absolute;
+  z-index: 11;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.8s linear;
+}
+.ws-tabs-scroll:hover > .ws-tabs-scrollbar,
+.ws-tabs-scrollbar.ws-active {
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.ws-tabs-slider {
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--ws-color-scrollbarSlider-background);
+}
+.ws-tabs-slider:hover {
+  background: var(--ws-color-scrollbarSlider-hoverBackground);
+}
+.ws-active > .ws-tabs-slider {
+  background: var(--ws-color-scrollbarSlider-activeBackground);
+}
+
+.ws-tabs-actions {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  align-items: center;
+  height: 31px;
+  padding: 0 4px;
+}
+.ws-tab-action {
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  outline-offset: -1px;
+  color: var(--ws-color-icon-foreground);
+  background: none;
+  cursor: pointer;
+}
+.ws-tab-action:hover {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+.ws-tab-action:active {
+  background: var(--ws-color-toolbar-activeBackground);
+}
+.ws-tab-action:focus-visible,
+.ws-tab-actions > button:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+}

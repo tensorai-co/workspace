@@ -1,0 +1,36 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "types": []
+  },
+  "include": [
+    "src",
+    "test"
+  ],
+  "references": [
+    {
+      "path": "../text"
+    },
+    {
+      "path": "../languages"
+    },
+    {
+      "path": "../markdown-parser"
+    },
+    {
+      "path": "../theme"
+    },
+    {
+      "path": "../icons"
+    },
+    {
+      "path": "../host"
+    },
+    {
+      "path": "../testing"
+    }
+  ]
+}

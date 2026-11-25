@@ -1,0 +1,65 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  color: var(--ws-color-foreground);
+  background: var(--ws-color-sideBar-background);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+}
+.check {
+  display: flex;
+  height: 100%;
+}
+/* As wide as the list in the 256px sidebar. */
+.check-explorer {
+  flex: none;
+  width: 253px;
+  height: 100%;
+}
+.check-results {
+  flex: 1;
+  min-width: 0;
+  padding: 0 24px;
+  overflow: auto;
+  background: var(--ws-color-editor-background);
+}
+.check-results > h1 {
+  font-size: 15px;
+}
+.check-results > table th,
+.check-results > table td {
+  padding: 2px 16px 2px 0;
+  font-weight: 400;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* As wide as the reference editor, with some sash and lines below. */
+#check-tabs {
+  width: 429px;
+  margin-top: 16px;
+  border-bottom: 24px solid var(--ws-color-editor-background);
+}
+#check-gaps,
+#check-lines {
+  width: 400px;
+  height: 40px;
+  margin-top: 16px;
+  background: var(--ws-color-sideBar-background);
+}
+
+/* The panel body was 642×214, under a 32px header. */
+#check-terminal {
+  width: 642px;
+  height: 246px;
+  margin-top: 16px;
+}
+#check-markdown {
+  width: 407.5px;
+  height: 700px;
+  margin-top: 16px;
+}

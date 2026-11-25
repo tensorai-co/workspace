@@ -1,0 +1,126 @@
+/* Split panes. Colors come only from theme tokens; sizes are measured (see the layout check). */
+
+.ws-split {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.ws-pane {
+  position: absolute;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.ws-split.ws-row > .ws-pane {
+  top: 0;
+  height: 100%;
+}
+.ws-split.ws-column > .ws-pane {
+  left: 0;
+  width: 100%;
+}
+
+/* Without a gap, panes meet at a line. */
+.ws-split:not(.ws-gaps) > .ws-pane:not(.ws-first)::before {
+  content: '';
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  background: var(--ws-color-editorGroup-border);
+  pointer-events: none;
+}
+.ws-split.ws-row:not(.ws-gaps) > .ws-pane:not(.ws-first)::before {
+  width: 1px;
+  height: 100%;
+}
+.ws-split.ws-column:not(.ws-gaps) > .ws-pane:not(.ws-first)::before {
+  width: 100%;
+  height: 1px;
+}
+
+.ws-sash {
+  position: absolute;
+  z-index: 35;
+  touch-action: none;
+}
+.ws-sash.ws-disabled {
+  pointer-events: none;
+}
+.ws-row > .ws-sash {
+  top: 0;
+  width: 4px;
+  height: 100%;
+  cursor: col-resize;
+}
+.ws-column > .ws-sash {
+  left: 0;
+  width: 100%;
+  height: 4px;
+  cursor: row-resize;
+}
+.ws-row > .ws-sash.ws-min {
+  cursor: e-resize;
+}
+.ws-row > .ws-sash.ws-max {
+  cursor: w-resize;
+}
+.ws-column > .ws-sash.ws-min {
+  cursor: s-resize;
+}
+.ws-column > .ws-sash.ws-max {
+  cursor: n-resize;
+}
+.ws-sash::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: transparent;
+  transition: background-color 0.1s ease-out;
+  pointer-events: none;
+}
+.ws-sash:is(.ws-hover, .ws-active)::before {
+  background: var(--ws-color-sash-hoverBorder, var(--ws-color-focusBorder));
+}
+
+/* Three dots in the middle of a gap. */
+.ws-gaps > .ws-sash:not(.ws-disabled)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--ws-color-foreground) 40%, transparent);
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.15s ease-out;
+  pointer-events: none;
+}
+.ws-gaps.ws-row > .ws-sash:not(.ws-disabled)::after {
+  box-shadow:
+    0 -5px currentColor,
+    0 5px currentColor;
+}
+.ws-gaps.ws-column > .ws-sash:not(.ws-disabled)::after {
+  box-shadow:
+    -5px 0 currentColor,
+    5px 0 currentColor;
+}
+.ws-gaps > .ws-sash:is(.ws-hover, .ws-active)::after {
+  opacity: 0;
+}
+.ws-gaps[data-grips-hidden] > .ws-sash::after {
+  opacity: 0;
+  transition-duration: 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ws-sash::before,
+  .ws-sash::after {
+    transition: none !important;
+  }
+}

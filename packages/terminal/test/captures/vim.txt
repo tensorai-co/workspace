@@ -1,0 +1,25 @@
+alternate 4,0 base 0
+  9 line 9: 你好 café — short
+ 10 line 10: 你好 café — short
+ 11 line 11: 你好 café — short
+ 12 line 12: 你好 café — short
+ 13 line 13: 你好 café — short
+ 14 line 14: the quick brown fox jumps over the lazy dog, again and again and ag
+    ain and once more
+ 15 line 15: 你好 café — short
+ 16 line 16: 你好 café — short
+ 17 line 17: 你好 café — short
+ 18 line 18: 你好 café — short
+poem.txt                                                      9,1            11%
+  9 class Thing:
+ 10     value = 42 
+ 11     def double(self):
+ 12         return self.value * 2
+ 13 
+ 14 if __name__ == "__main__":
+ 15     greet("world")
+~                                                                               
+~                                                                               
+~                                                                               
+code.py [+]                                                   15,5           Bot
+1 more line; before #1  0 seconds ago

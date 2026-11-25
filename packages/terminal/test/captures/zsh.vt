@@ -1,0 +1,11 @@
+[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[J$ [K[?2004hPPS1="%% "[?2004l
+[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[J% [K[?2004hlls
+[Jls         lsappinfo  lsbom      lskq       lsm        lsmp       lsvfs[A[0m[27m[24m[2Cls[K[?2004l
+[J[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[J% [K[?2004hffor i in 1 2 3; do[?2004l
+[0m[27m[24m[J> [K[?2004heecho $i[?2004l
+[0m[27m[24m[J> [K[?2004hddone[?2004l
+1
+2
+3
+[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[J% [K[?2004heecho no newline at the end | tr -d "\n"[?2004l
+no newline at the end[1m[7m%[27m[1m[0m                                                                                [0m[27m[24m[J% [K[?2004h

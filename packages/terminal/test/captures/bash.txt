@@ -1,0 +1,25 @@
+normal 2,8 base 0
+$ # echo one two 
+$ echo inserted a very long line that has to wrap because it is wider than the e
+ighty columns there are here
+inserted a very long line that has to wrap because it is wider than the eighty c
+olumns there are here
+$ printf "\033[31mred\033[0m \033[1;4mbold\033[0m\n"
+red bold
+$ printf "\033[31mred\033[0m \033[1;4mbold\033[0m\n"
+$ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

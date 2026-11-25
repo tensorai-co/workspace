@@ -1,0 +1,184 @@
+/* The hover, menus and dialogs. Colors come only from theme tokens; sizes are measured (see the layout check). */
+@import '@tensorai-workspace/icons/styles.css';
+
+.ws-hover {
+  position: fixed;
+  z-index: 40;
+  box-sizing: border-box;
+  /* Its own width even at the window's edge, where it moves left instead. */
+  width: max-content;
+  max-width: min(700px, 100vw);
+  padding: 2px 8px;
+  border: 1px solid var(--ws-color-editorHoverWidget-border, var(--ws-color-editorWidget-border));
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorHoverWidget-foreground, var(--ws-color-editorWidget-foreground));
+  background: var(--ws-color-editorHoverWidget-background, var(--ws-color-editorWidget-background));
+  box-shadow: var(--ws-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 19px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+.ws-menu {
+  position: fixed;
+  z-index: 2575;
+  box-sizing: border-box;
+  min-width: 160px;
+  padding: 4px 0;
+  border: 1px solid var(--ws-color-menu-border);
+  border-radius: var(--ws-radius);
+  outline: none;
+  color: var(--ws-color-menu-foreground);
+  background: var(--ws-color-menu-background);
+  box-shadow: var(--ws-shadow);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ws-menu-group + .ws-menu-group::before {
+  content: '';
+  display: block;
+  margin: 5px 0;
+  border-bottom: 1px solid var(--ws-color-menu-separatorBackground);
+}
+.ws-menu-item {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  margin: 0 4px;
+  border-radius: 6px;
+  line-height: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ws-menu-item.ws-active {
+  color: var(--ws-color-list-hoverForeground);
+  background: var(--ws-color-list-hoverBackground);
+  outline: 1px solid var(--ws-color-menu-selectionBorder);
+  outline-offset: -1px;
+}
+.ws-menu-item[aria-disabled] {
+  color: var(--ws-color-disabledForeground);
+  cursor: default;
+}
+.ws-menu-label {
+  padding: 0 26px;
+}
+.ws-menu-keys {
+  flex: 1;
+  padding: 0 26px;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.ws-dialog-shade {
+  position: fixed;
+  z-index: 2575;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+.ws-dialog {
+  position: relative;
+  box-sizing: border-box;
+  width: min(450px, 90vw);
+  min-height: 75px;
+  padding: 4px;
+  border: 1px solid var(--ws-color-widget-border);
+  border-radius: var(--ws-radius);
+  color: var(--ws-color-editorWidget-foreground);
+  background: var(--ws-color-editorWidget-background);
+  box-shadow: var(--ws-shadow-dialog);
+  font-family: var(--ws-font-ui);
+  font-size: 13px;
+  line-height: 18.2px;
+}
+.ws-dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border: 0;
+  border-radius: var(--ws-radius-small);
+  color: var(--ws-color-icon-foreground);
+  background: none;
+  cursor: pointer;
+}
+.ws-dialog-close:hover {
+  background: var(--ws-color-toolbar-hoverBackground);
+}
+.ws-dialog-close:focus-visible {
+  outline: 1px solid var(--ws-color-focusBorder);
+  outline-offset: -1px;
+}
+.ws-dialog-message {
+  display: flex;
+  padding: 16px 8px 0;
+}
+.ws-dialog-icon.ws-warning {
+  color: var(--ws-color-problemsWarningIcon-foreground);
+}
+.ws-dialog-icon.ws-error {
+  color: var(--ws-color-problemsErrorIcon-foreground, var(--ws-color-errorForeground));
+}
+.ws-dialog-icon.ws-info {
+  color: var(--ws-color-problemsInfoIcon-foreground, var(--ws-color-focusBorder));
+}
+.ws-dialog-text {
+  flex: 1;
+  min-width: 0;
+  padding: 0 20px 0 8px;
+  overflow-wrap: break-word;
+}
+.ws-dialog-title {
+  display: flex;
+  align-items: center;
+  min-height: 22px;
+  margin: 2px 0 12px;
+  font-weight: 600;
+}
+.ws-dialog-detail {
+  color: var(--ws-color-descriptionForeground);
+  line-height: 20px;
+  white-space: pre-wrap;
+}
+.ws-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+}
+.ws-button {
+  margin: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--ws-color-button-border);
+  border-radius: var(--ws-radius-small);
+  color: var(--ws-color-button-foreground);
+  background: var(--ws-color-button-background);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+.ws-button:is(:hover, :focus) {
+  background: var(--ws-color-button-hoverBackground);
+}
+.ws-button:focus {
+  outline: 1px solid var(--ws-color-focusBorder);
+  outline-offset: 1px;
+}
+.ws-button.ws-secondary {
+  border-color: var(--ws-color-button-secondaryBorder);
+  color: var(--ws-color-button-secondaryForeground);
+  background: var(--ws-color-button-secondaryBackground);
+}
+.ws-button.ws-secondary:is(:hover, :focus) {
+  background: var(--ws-color-button-secondaryHoverBackground);
+}

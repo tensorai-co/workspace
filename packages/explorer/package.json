@@ -1,0 +1,48 @@
+{
+  "name": "@tensorai-workspace/explorer",
+  "version": "0.1.0",
+  "description": "A file explorer: the folder tree with new, rename, delete and open.",
+  "license": "MIT",
+  "homepage": "https://github.com/tensorai-co/workspace/tree/main/packages/explorer#readme",
+  "bugs": {
+    "url": "https://github.com/tensorai-co/workspace/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tensorai-co/workspace.git",
+    "directory": "packages/explorer"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tensorai-workspace/host": "0.1.0",
+    "@tensorai-workspace/tree": "0.1.0",
+    "@tensorai-workspace/icons": "0.1.0",
+    "@tensorai-workspace/theme": "0.1.0",
+    "@tensorai-workspace/languages": "0.1.0",
+    "@tensorai-workspace/overlays": "0.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@tensorai-workspace/testing": "0.1.0"
+  }
+}
