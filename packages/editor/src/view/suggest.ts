@@ -1,5 +1,5 @@
-import type { CompletionItem, CompletionKind } from '@tensorai-workspace/host'
-import { codicon, iconSvg, type CodiconName } from '@tensorai-workspace/icons'
+import type { CompletionItem, CompletionKind } from '@tensorai-co/workspace/host'
+import { codicon, iconSvg, type CodiconName } from '@tensorai-co/workspace/icons'
 import type { MatchRange } from '../core/fuzzy.js'
 import type { SuggestView } from '../core/suggest.js'
 import { renderMarkdown } from './markdown.js'

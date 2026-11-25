@@ -1,5 +1,5 @@
-import { languageById, type LanguageInfo } from '@tensorai-workspace/languages'
-import { ChangeSet, Text, type ChangeSpec } from '@tensorai-workspace/text'
+import { languageById, type LanguageInfo } from '@tensorai-co/workspace/languages'
+import { ChangeSet, Text, type ChangeSpec } from '@tensorai-co/workspace/text'
 import { EditorSelection, SelectionRange } from './selection.js'
 
 /** What kind of edit a transaction is, for undo grouping and for features that react to typing. */

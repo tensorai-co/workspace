@@ -1,4 +1,4 @@
-import '@tensorai-workspace/workspace/styles.css'
+import '@tensorai-co/workspace/styles.css'
 import './playground.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'

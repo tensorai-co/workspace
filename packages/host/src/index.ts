@@ -1,5 +1,5 @@
 // What the components need from the app they run in. A host implements these over whatever it has (a disk, a remote
-// machine, memory); `@tensorai-workspace/testing` has an in-memory fake of each. Paths are absolute, with "/" between
+// machine, memory); `@tensorai-co/workspace/testing` has an in-memory fake of each. Paths are absolute, with "/" between
 // segments.
 
 /** Files and folders. Every method rejects when it can't do its job, with a message fit to show. */
@@ -15,6 +15,11 @@ export interface FileSystem {
   rename(from: string, to: string): Promise<void>
   /** Deletes a file, or a folder with everything in it. */
   delete(path: string): Promise<void>
+  /**
+   * Optional: what `delete` does with what it's given. "trash" when it can be put back (the macOS Trash, the Recycle
+   * Bin, or one of the host's own), so it's asked as a move, not a permanent delete. Permanent when left out.
+   */
+  readonly deletes?: 'trash' | 'permanently'
   /** Optional: changes made under `path`, by anyone. Returns a function that stops watching. */
   watch?(path: string, onChange: (event: FileChange) => void): () => void
 }

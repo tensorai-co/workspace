@@ -1,4 +1,4 @@
-import { MemoryFileSystem, MemoryStorage, ScriptedLanguageService, ScriptedTerminalHost } from '@tensorai-workspace/testing'
+import { MemoryFileSystem, MemoryStorage, ScriptedLanguageService, ScriptedTerminalHost } from '@tensorai-co/workspace/testing'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -37,6 +37,24 @@ describe('Workspace', () => {
     expect(screen.getByRole('tab', { name: 'Explorer' }).getAttribute('aria-selected')).toBe('true')
     expect(screen.getByRole('button', { name: 'Toggle Panel (⌘J)' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /Secondary Side Bar/ })).toBeNull()
+  })
+
+  it('leaves the titlebar out for a host with its own bar, and keeps its commands', async () => {
+    const { container, api } = await open({ titlebar: false })
+    expect(container.querySelector('.ws-titlebar')).toBeNull()
+    expect(container.querySelector('.ws-no-titlebar .ws-activitybar')).not.toBeNull()
+    act(() => void api().commands.execute('workbench.action.toggleSidebarVisibility'))
+    expect(api().layout.state.sidebar).toBe(false)
+  })
+
+  it('says why a file isn’t shown: binary, or the host couldn’t read it', async () => {
+    const fs = new MemoryFileSystem({ '/work/logo.png': new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0, 1]), '/work/gone.txt': 'x' })
+    fs.fail('/work/gone.txt', 'Permission denied')
+    const { api } = await open({ fs })
+    act(() => api().open('/work/logo.png'))
+    expect((await screen.findByRole('status')).textContent).toMatch(/binary/)
+    act(() => api().open('/work/gone.txt'))
+    await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Permission denied'))
   })
 
   it('toggles parts from keys and buttons, and keeps the layout', async () => {

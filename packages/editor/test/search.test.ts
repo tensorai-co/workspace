@@ -1,4 +1,4 @@
-import { Text } from '@tensorai-workspace/text'
+import { Text } from '@tensorai-co/workspace/text'
 import { describe, expect, it } from 'vitest'
 import { EditorState, findMatches, findNext, findPrevious, matchIndex, preserveCase, replaceAll, replacementFor, replaceNext, selectAllMatches, undo, type SearchQuery } from '../src/core/index.js'
 

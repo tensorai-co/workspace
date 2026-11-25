@@ -1,4 +1,4 @@
-import type { DirEntry, FileChange, FileSystem } from '@tensorai-workspace/host'
+import type { DirEntry, FileChange, FileSystem } from '@tensorai-co/workspace/host'
 
 /** One call made to a MemoryFileSystem. */
 export interface FileCall {
@@ -9,6 +9,8 @@ export interface FileCall {
 export interface MemoryFileSystemOptions {
   /** How long each call takes, in milliseconds. 0 (the default) settles as soon as promises can. */
   delay?: number
+  /** What `delete` says it does: "trash" to pretend deletes can be put back. */
+  deletes?: 'trash' | 'permanently'
 }
 
 type Node = { kind: 'file'; data: Uint8Array } | { kind: 'dir'; children: Map<string, Node> }
@@ -27,12 +29,15 @@ export class MemoryFileSystem implements FileSystem {
   private readonly failures = new Map<string, Error>()
   private readonly watchers = new Set<{ path: string; onChange: (event: FileChange) => void }>()
 
-  constructor(files: Record<string, string> = {}, options: MemoryFileSystemOptions = {}) {
+  readonly deletes: 'trash' | 'permanently' | undefined
+
+  constructor(files: Record<string, string | Uint8Array> = {}, options: MemoryFileSystemOptions = {}) {
     this.delay = options.delay ?? 0
+    this.deletes = options.deletes
     for (const [path, text] of Object.entries(files)) {
       const segments = split(path)
       if (path.endsWith('/')) this.makeDir(segments)
-      else this.makeDir(segments.slice(0, -1)).children.set(segments[segments.length - 1]!, { kind: 'file', data: encoder.encode(text) })
+      else this.makeDir(segments.slice(0, -1)).children.set(segments[segments.length - 1]!, { kind: 'file', data: typeof text === 'string' ? encoder.encode(text) : text })
     }
   }
 

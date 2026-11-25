@@ -1,5 +1,5 @@
-import type { Rules } from '@tensorai-workspace/languages'
-import type { ChangeSet, Text } from '@tensorai-workspace/text'
+import type { Rules } from '@tensorai-co/workspace/languages'
+import type { ChangeSet, Text } from '@tensorai-co/workspace/text'
 
 /** A region that can fold: its first line stays, the lines after it through `end` hide. */
 export interface FoldRange {

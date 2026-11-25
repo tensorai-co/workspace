@@ -1,4 +1,4 @@
-import type { Appearance } from '@tensorai-workspace/theme'
+import type { Appearance } from '@tensorai-co/workspace/theme'
 
 const CODE_FONTS: Record<string, string | undefined> = {
   Default: undefined,

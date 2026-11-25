@@ -1,4 +1,4 @@
-import type { CompletionItem, CompletionKind, Diagnostic, DocumentSymbol, FileSystem, Hover, LanguageService, Location, SymbolKind, TextEdit } from '@tensorai-workspace/host'
+import type { CompletionItem, CompletionKind, Diagnostic, DocumentSymbol, FileSystem, Hover, LanguageService, Location, SymbolKind, TextEdit } from '@tensorai-co/workspace/host'
 
 /**
  * A pretend language service for the playground's TypeScript and JavaScript files. It reads declarations with a few

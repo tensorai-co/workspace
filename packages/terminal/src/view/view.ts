@@ -1,4 +1,4 @@
-import type { Clipboard } from '@tensorai-workspace/host'
+import type { Clipboard } from '@tensorai-co/workspace/host'
 import { MIN_CONTRAST, hex } from '../core/colors.js'
 import { encodeKey, encodePaste } from '../core/keys.js'
 import { BOLD, ITALIC } from '../core/line.js'

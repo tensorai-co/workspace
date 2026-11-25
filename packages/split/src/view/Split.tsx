@@ -1,4 +1,4 @@
-import type { Storage } from '@tensorai-workspace/host'
+import type { Storage } from '@tensorai-co/workspace/host'
 import { Children, isValidElement, useEffect, useLayoutEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactElement, type ReactNode } from 'react'
 import { SplitModel, type PaneSpec, type SavedSplit } from '../core/model.js'
 import { Sash } from './Sash.js'

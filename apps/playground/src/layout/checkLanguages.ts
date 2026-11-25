@@ -1,7 +1,7 @@
-import { EditorState, EditorView } from '@tensorai-workspace/editor'
-import type { CompletionItem } from '@tensorai-workspace/host'
-import { languageById } from '@tensorai-workspace/languages'
-import { ScriptedLanguageService } from '@tensorai-workspace/testing'
+import { EditorState, EditorView } from '@tensorai-co/workspace/editor'
+import type { CompletionItem } from '@tensorai-co/workspace/host'
+import { languageById } from '@tensorai-co/workspace/languages'
+import { ScriptedLanguageService } from '@tensorai-co/workspace/testing'
 import { round, settle, type Check } from './measure'
 import * as ref from './reference'
 

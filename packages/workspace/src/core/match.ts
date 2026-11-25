@@ -1,4 +1,4 @@
-import { fuzzyScore } from '@tensorai-workspace/editor/core'
+import { fuzzyScore } from '@tensorai-co/workspace/editor/core'
 
 /** A matched stretch of a label: [start, end). */
 export interface Match {

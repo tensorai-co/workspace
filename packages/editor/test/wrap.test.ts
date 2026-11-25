@@ -1,5 +1,5 @@
-import { languageById } from '@tensorai-workspace/languages'
-import { ChangeSet, Text } from '@tensorai-workspace/text'
+import { languageById } from '@tensorai-co/workspace/languages'
+import { ChangeSet, Text } from '@tensorai-co/workspace/text'
 import { describe, expect, it } from 'vitest'
 import { foldRanges, Folds, rowsOf, wrapLine } from '../src/core/index.js'
 

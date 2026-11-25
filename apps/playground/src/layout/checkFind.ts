@@ -1,5 +1,5 @@
-import { EditorState, EditorView } from '@tensorai-workspace/editor'
-import { languageById } from '@tensorai-workspace/languages'
+import { EditorState, EditorView } from '@tensorai-co/workspace/editor'
+import { languageById } from '@tensorai-co/workspace/languages'
 import { round, settle, type Check } from './measure'
 import * as ref from './reference'
 

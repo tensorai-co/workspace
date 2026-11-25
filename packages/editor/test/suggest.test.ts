@@ -1,5 +1,5 @@
-import type { CompletionItem } from '@tensorai-workspace/host'
-import { ScriptedLanguageService, type ScriptedLanguageOptions } from '@tensorai-workspace/testing'
+import type { CompletionItem } from '@tensorai-co/workspace/host'
+import { ScriptedLanguageService, type ScriptedLanguageOptions } from '@tensorai-co/workspace/testing'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { deleteBackward, Diagnostics, EditorState, fuzzyScore, fuzzyScoreGraceful, insertText, Suggest, type Command, type TransactionSpec } from '../src/core/index.js'
 

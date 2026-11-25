@@ -1,4 +1,4 @@
-import { MemoryStorage } from '@tensorai-workspace/testing'
+import { MemoryStorage } from '@tensorai-co/workspace/testing'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { StrictMode, useState } from 'react'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'

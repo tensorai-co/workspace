@@ -1,6 +1,6 @@
-import type { InlineCompletionRequest } from '@tensorai-workspace/host'
-import { languageById } from '@tensorai-workspace/languages'
-import { ScriptedCompletionProvider, type ScriptedSuggestion } from '@tensorai-workspace/testing'
+import type { InlineCompletionRequest } from '@tensorai-co/workspace/host'
+import { languageById } from '@tensorai-co/workspace/languages'
+import { ScriptedCompletionProvider, type ScriptedSuggestion } from '@tensorai-co/workspace/testing'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { EditorState, EditorView, isMac } from '../src/index.js'
 

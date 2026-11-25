@@ -1,4 +1,4 @@
-import { safeUrl } from '@tensorai-workspace/markdown-parser'
+import { safeUrl } from '@tensorai-co/workspace/markdown-parser'
 
 /** Where the document is, for what it links to. Without a path, relative links lead nowhere. */
 export interface Place {

@@ -1,4 +1,4 @@
-import type { ChangeSpec } from '@tensorai-workspace/text'
+import type { ChangeSpec } from '@tensorai-co/workspace/text'
 import { EditorSelection, SelectionRange } from './selection.js'
 import { EditorState, History, type TransactionSpec, type UserEvent } from './state.js'
 import { columnAt, indentOf, indentString, indexAtColumn, nextGrapheme, prevGrapheme, wordLeft, wordRight } from './strings.js'

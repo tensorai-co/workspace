@@ -3,7 +3,7 @@ export type ThemeName = 'light' | 'dark'
 
 /**
  * Applies a theme to an element and everything in it, by setting `data-theme`. The tokens themselves come from
- * `@tensorai-workspace/theme/styles.css`; without a `data-theme`, the light theme applies.
+ * `@tensorai-co/workspace/theme/styles.css`; without a `data-theme`, the light theme applies.
  */
 export function applyTheme(element: HTMLElement, theme: ThemeName): void {
   element.dataset.theme = theme

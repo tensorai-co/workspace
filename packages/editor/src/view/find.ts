@@ -1,4 +1,4 @@
-import { codicon, iconSvg, type CodiconName } from '@tensorai-workspace/icons'
+import { codicon, iconSvg, type CodiconName } from '@tensorai-co/workspace/icons'
 import { findMatches, findNext, findPrevious, matchIndex, MATCHES_LIMIT, nearestMatch, replaceAll, replaceNext, selectAllMatches, type SearchMatch, type SearchQuery } from '../core/search.js'
 import type { EditorState, TransactionSpec } from '../core/state.js'
 

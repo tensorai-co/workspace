@@ -1,4 +1,4 @@
-import type { ChangeSet } from '@tensorai-workspace/text'
+import type { ChangeSet } from '@tensorai-co/workspace/text'
 
 /** One cursor or selection: anchor is where it started, head where the cursor is. */
 export class SelectionRange {

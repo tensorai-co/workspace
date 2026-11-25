@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+import { defaultClientConditions, defineConfig } from 'vite'
 import { shell } from './shell/plugin'
 
-export default defineConfig({ plugins: [shell()] })
+// The playground runs on the packages' TypeScript: the `source` condition in package.json's exports.
+export default defineConfig({ plugins: [shell()], resolve: { conditions: ['source', ...defaultClientConditions] } })

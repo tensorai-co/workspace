@@ -1,5 +1,5 @@
-import type { InlineCompletion, InlineCompletionRequest } from '@tensorai-workspace/host'
-import { ScriptedCompletionProvider } from '@tensorai-workspace/testing'
+import type { InlineCompletion, InlineCompletionRequest } from '@tensorai-co/workspace/host'
+import { ScriptedCompletionProvider } from '@tensorai-co/workspace/testing'
 
 const WORD = /[\w$]/
 const NAME = /^[A-Za-z_$][\w$]*$/

@@ -1,5 +1,5 @@
-import type { DirEntry, FileChange, FileSystem } from '@tensorai-workspace/host'
-import { TreeModel, type TreeMessage } from '@tensorai-workspace/tree/core'
+import type { DirEntry, FileChange, FileSystem } from '@tensorai-co/workspace/host'
+import { TreeModel, type TreeMessage } from '@tensorai-co/workspace/tree/core'
 import { checkName, compareEntries } from './names.js'
 import { baseName, dirName, isInside, joinPath, normalPath, topmost } from './paths.js'
 
@@ -239,16 +239,23 @@ export class ExplorerModel {
   }
 
   /** The question to ask before deleting these, in the words. */
+  /** Whether deleting moves to a trash the user can restore from: the file system says so. */
+  get trash(): boolean {
+    return this.fs.deletes === 'trash'
+  }
+
   deleteQuestion(paths: readonly string[]): { message: string; detail: string } {
-    const detail = 'This action is irreversible!'
+    const verb = this.trash ? 'delete' : 'permanently delete'
     const [only] = paths
-    if (paths.length === 1 && only !== undefined) {
+    const single = paths.length === 1 && only !== undefined
+    const detail = this.trash ? `You can restore ${single ? 'this file' : 'these files'} from the Trash.` : 'This action is irreversible!'
+    if (single) {
       const dir = this.tree.node(only)?.item.kind === 'dir'
-      return { message: `Are you sure you want to permanently delete '${baseName(only)}'${dir ? ' and its contents' : ''}?`, detail }
+      return { message: `Are you sure you want to ${verb} '${baseName(only)}'${dir ? ' and its contents' : ''}?`, detail }
     }
     const dirs = paths.filter((p) => this.tree.node(p)?.item.kind === 'dir').length
     const what = dirs === 0 ? `${paths.length} files` : dirs === paths.length ? `${paths.length} directories and their contents` : `${paths.length} files/directories and their contents`
-    return { message: `Are you sure you want to permanently delete the following ${what}?`, detail: `${paths.slice(0, 10).map(baseName).join('\n')}${paths.length > 10 ? `\n...${paths.length - 10} additional files not shown` : ''}\n\n${detail}` }
+    return { message: `Are you sure you want to ${verb} the following ${what}?`, detail: `${paths.slice(0, 10).map(baseName).join('\n')}${paths.length > 10 ? `\n...${paths.length - 10} additional files not shown` : ''}\n\n${detail}` }
   }
 
   // ------------------------------------------------------------ changes

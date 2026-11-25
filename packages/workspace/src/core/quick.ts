@@ -1,6 +1,6 @@
-import { fuzzyScore } from '@tensorai-workspace/editor/core'
-import type { DocumentSymbol, Storage, SymbolKind } from '@tensorai-workspace/host'
-import type { CodiconName } from '@tensorai-workspace/icons'
+import { fuzzyScore } from '@tensorai-co/workspace/editor/core'
+import type { DocumentSymbol, Storage, SymbolKind } from '@tensorai-co/workspace/host'
+import type { CodiconName } from '@tensorai-co/workspace/icons'
 import type { CommandRegistry } from './commands.js'
 import { matchesCommand, scoreFile, type Match } from './match.js'
 

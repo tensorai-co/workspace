@@ -1,9 +1,9 @@
-import type { Clipboard, FileSystem } from '@tensorai-workspace/host'
-import { Codicon, FileIcon } from '@tensorai-workspace/icons/react'
-import type { CodiconName } from '@tensorai-workspace/icons'
-import { detectLanguage } from '@tensorai-workspace/languages'
-import { Dialog, Menu, type MenuItem } from '@tensorai-workspace/overlays'
-import { Tree, type TreeNode } from '@tensorai-workspace/tree'
+import type { Clipboard, FileSystem } from '@tensorai-co/workspace/host'
+import { Codicon, FileIcon } from '@tensorai-co/workspace/icons/react'
+import type { CodiconName } from '@tensorai-co/workspace/icons'
+import { detectLanguage } from '@tensorai-co/workspace/languages'
+import { Dialog, Menu, type MenuItem } from '@tensorai-co/workspace/overlays'
+import { Tree, type TreeNode } from '@tensorai-co/workspace/tree'
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type KeyboardEvent } from 'react'
 import { ExplorerModel, type ExplorerEntry } from '../core/model.js'
 import { baseName, normalPath, relativePath } from '../core/paths.js'
@@ -142,7 +142,7 @@ export function Explorer({ fs, root, title, onOpen, onCreate, onRename, onDelete
     if (path !== undefined)
       groups.push([
         { label: 'Rename...', keys: KEYS.rename, disabled: targets.length > 1, run: () => model.startRename(path) },
-        { label: 'Delete Permanently', keys: KEYS.delete, run: () => void askDelete(path) },
+        { label: model.trash ? 'Delete' : 'Delete Permanently', keys: KEYS.delete, run: () => void askDelete(path) },
       ])
     return groups
   }
@@ -239,7 +239,7 @@ export function Explorer({ fs, root, title, onOpen, onCreate, onRename, onDelete
         <Dialog
           {...model.deleteQuestion(deleting)}
           buttons={[
-            { label: 'Delete', value: 'delete' },
+            { label: model.trash ? 'Move to Trash' : 'Delete', value: 'delete' },
             { label: 'Cancel', value: 'cancel' },
           ]}
           onAnswer={(answer) => {

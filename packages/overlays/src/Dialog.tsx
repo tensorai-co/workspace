@@ -1,4 +1,4 @@
-import { Codicon } from '@tensorai-workspace/icons/react'
+import { Codicon } from '@tensorai-co/workspace/icons/react'
 import { useEffect, useId, useRef } from 'react'
 
 export interface DialogButton {

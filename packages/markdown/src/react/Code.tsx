@@ -1,41 +1,5 @@
-import type { Clipboard } from '@tensorai-workspace/host'
-import { bracketDepth, grammarOf, languageById, loadGrammar, paintLine, Tokenizer } from '@tensorai-workspace/languages'
-import { Text } from '@tensorai-workspace/text'
-import { memo, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-
-/** Longer code stays plain. */
-const MAX_COLORED = 200_000
-
-/** Code in the editor's colors, once its grammar has loaded. */
-export const Colored = memo(function Colored({ text, lang }: { text: string; lang?: string }): ReactNode {
-  const language = useMemo(() => (lang ? languageById(lang.toLowerCase()) : undefined), [lang])
-  const [grammar, setGrammar] = useState(() => language && grammarOf(language))
-  useEffect(() => {
-    let current = true
-    const loaded = language && grammarOf(language)
-    setGrammar(loaded)
-    if (language?.grammar && !loaded) {
-      void loadGrammar(language).then(
-        (g) => current && setGrammar(g),
-        () => {}, // It stays plain.
-      )
-    }
-    return () => {
-      current = false
-    }
-  }, [language])
-
-  return useMemo(() => {
-    if (!grammar || text.length > MAX_COLORED) return text
-    let depth = 0
-    return new Tokenizer(Text.of(text), grammar).all().flatMap((tokens, i) => {
-      const runs = paintLine(tokens, depth)
-      depth = bracketDepth(tokens, depth)
-      const spans: ReactNode[] = runs.map((run, j) => (run.className ? <span key={`${i}.${j}`} className={run.className} children={run.text} /> : run.text))
-      return i ? ['\n', ...spans] : spans
-    })
-  }, [text, grammar])
-})
+import type { Clipboard } from '@tensorai-co/workspace/host'
+import { useEffect, useRef, useState } from 'react'
 
 // The preview's own icons (extensions/markdown-language-features), smaller than the codicons of the same names.
 const COPY = (

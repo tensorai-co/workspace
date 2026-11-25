@@ -6,37 +6,49 @@ Every piece is written here: the text engine, the tokenizer and its 234 grammars
 
 ---
 
+## Install
+
+It's one package, installed from GitHub, with an entry point for each part:
+
+```sh
+npm install github:tensorai-co/workspace          # the latest main
+npm install github:tensorai-co/workspace#<commit>  # or pin a commit or tag
+```
+
+npm builds it as it installs (`prepare` runs `tsc`), so what's imported is JavaScript with type declarations, for any
+bundler or Node. Each part's styles are their own `styles.css`; the whole IDE's include everything it shows.
+
 ## Packages
 
-| Package | What it is |
+| Entry point | What it is |
 |---|---|
-| `@tensorai-workspace/text` | The document: a persistent B-tree of lines, change sets (apply, invert, compose, map positions) |
-| `@tensorai-workspace/highlight` | Syntax highlighting: a line-by-line tokenizer and grammars for 234 languages, each loaded when first used |
-| `@tensorai-workspace/languages` | Every language the editor knows: detection from file names, editing rules, and incremental tokenizing over `highlight` |
-| `@tensorai-workspace/editor` | The code editor: immutable state and transactions, undo history, commands, keymap, virtualized view, React component |
-| `@tensorai-workspace/terminal` | A terminal emulator: parser, screen, input, DOM renderer, terminal tabs |
-| `@tensorai-workspace/markdown-parser` | A Markdown parser: CommonMark and GitHub's tables, task lists, strikethrough and autolinks, to a syntax tree |
-| `@tensorai-workspace/markdown` | The Markdown preview: follows its source as it changes and scrolls, with images and links from any file system |
-| `@tensorai-workspace/tree` | A virtualized, keyboard-navigable tree with lazy children |
-| `@tensorai-workspace/explorer` | The file explorer: new, rename, delete, open, over any file system |
-| `@tensorai-workspace/tabs` | The tab bar: preview, unsaved, dragged and overflowing tabs |
-| `@tensorai-workspace/split` | Resizable panes: sashes, snapping closed, saved sizes |
-| `@tensorai-workspace/overlays` | What opens over the page: the hover, menus and dialogs |
-| `@tensorai-workspace/host` | What a host app implements: `FileSystem`, `TerminalHost`, `Clipboard`, `Storage`, `InlineCompletionProvider` and `LanguageService` |
-| `@tensorai-workspace/testing` | In-memory fakes of the host interfaces, `ScriptedCompletionProvider` and `ScriptedLanguageService` |
-| `@tensorai-workspace/theme` | Light and dark color themes, fonts, sizes and shapes as CSS variables, and `Appearance` to change any of them |
-| `@tensorai-workspace/icons` | Seti file icons and Codicons UI icons, with the name-to-icon rules; React components in `icons/react` |
-| `@tensorai-workspace/workspace` | The whole IDE: titlebar, activity bar, sidebar, editor groups, panel, secondary side bar and status bar, with one registry of commands and keybindings |
+| `@tensorai-co/workspace/text` | The document: a persistent B-tree of lines, change sets (apply, invert, compose, map positions) |
+| `@tensorai-co/workspace/highlight` | Syntax highlighting: a line-by-line tokenizer and grammars for 234 languages, each loaded when first used |
+| `@tensorai-co/workspace/languages` | Every language the editor knows: detection from file names, editing rules, and incremental tokenizing over `highlight`; `languages/react` has `Highlighted`, read-only code in the editor's colors |
+| `@tensorai-co/workspace/editor` | The code editor: immutable state and transactions, undo history, commands, keymap, virtualized view, React component |
+| `@tensorai-co/workspace/terminal` | A terminal emulator: parser, screen, input, DOM renderer, terminal tabs |
+| `@tensorai-co/workspace/markdown-parser` | A Markdown parser: CommonMark and GitHub's tables, task lists, strikethrough and autolinks, to a syntax tree |
+| `@tensorai-co/workspace/markdown` | The Markdown preview: follows its source as it changes and scrolls, with images and links from any file system |
+| `@tensorai-co/workspace/tree` | A virtualized, keyboard-navigable tree with lazy children |
+| `@tensorai-co/workspace/explorer` | The file explorer: new, rename, delete, open, over any file system |
+| `@tensorai-co/workspace/tabs` | The tab bar: preview, unsaved, dragged and overflowing tabs |
+| `@tensorai-co/workspace/split` | Resizable panes: sashes, snapping closed, saved sizes |
+| `@tensorai-co/workspace/overlays` | What opens over the page: the hover, menus and dialogs |
+| `@tensorai-co/workspace/host` | What a host app implements: `FileSystem`, `TerminalHost`, `Clipboard`, `Storage`, `InlineCompletionProvider` and `LanguageService` |
+| `@tensorai-co/workspace/testing` | In-memory fakes of the host interfaces, `ScriptedCompletionProvider` and `ScriptedLanguageService` |
+| `@tensorai-co/workspace/theme` | Light and dark color themes, fonts, sizes and shapes as CSS variables, and `Appearance` to change any of them |
+| `@tensorai-co/workspace/icons` | Seti file icons and Codicons UI icons, with the name-to-icon rules; React components in `icons/react` |
+| `@tensorai-co/workspace` | The whole IDE: titlebar, activity bar, sidebar, editor groups, panel, secondary side bar and status bar, with one registry of commands and keybindings |
 
-React 19 is a peer dependency of the view packages. `host`, `text`, `highlight`, `languages`, `markdown-parser` and every `core` (`editor/core`, `tree/core`, `explorer/core`, `tabs/core`, `split/core`, `terminal/core`, `markdown/core`, `workspace/core`) use no DOM and no React.
+React 19 is a peer dependency of the view parts. `host`, `text`, `highlight`, `languages`, `markdown-parser` and every `core` (`editor/core`, `tree/core`, `explorer/core`, `tabs/core`, `split/core`, `terminal/core`, `markdown/core`, `workspace/core`) use no DOM and no React.
 
 ---
 
 ## Using the whole IDE
 
 ```tsx
-import '@tensorai-workspace/workspace/styles.css'
-import { StatusItem, Workspace } from '@tensorai-workspace/workspace'
+import '@tensorai-co/workspace/styles.css'
+import { StatusItem, Workspace } from '@tensorai-co/workspace'
 
 <Workspace
   fs={fileSystem}                     // FileSystem
@@ -57,11 +69,15 @@ import { StatusItem, Workspace } from '@tensorai-workspace/workspace'
 - **Commands:** every action is a command with an id, title, key and `when` clause, such as `workbench.action.togglePanel` on `⌘J`. A host's command with the same id replaces the built-in one, and `keybindings` adds keys.
 - **Slots:** the titlebar's middle, more sidebar views (each with an activity bar item), buttons at the bottom of the activity bar, the secondary side bar, and the status bar's left and right.
 - **The parts:** the layout, sizes and the sidebar's view are kept in `storage` under `storageKey`.
+- **The secondary side bar:** `auxiliaryBar` takes a `title`, its `content`, `actions` for its title and a `size` to start at.
+- **Its own bar or yours:** `titlebar={false}` leaves the titlebar out, for an app that has a bar of its own. The same commands (`workbench.action.toggleSidebarVisibility`, `togglePanel`, `toggleAuxiliaryBar`) and `api.layout` drive the parts from there.
+- **Files it can't show:** a binary file, or one the host fails to read, opens to a message saying why instead of an editor.
+- **Deletes that can be undone:** a `FileSystem` with `deletes: 'trash'` gets "Move to Trash" in the explorer, as VS Code asks it, instead of "Delete Permanently".
 
 `workspace/core` has the registry with no view: `CommandRegistry`, `Keybindings` (chords included), `ContextKeys`, `parseWhen` and `LayoutModel`.
 
 ```ts
-import { CommandRegistry, ContextKeys, Keybindings } from '@tensorai-workspace/workspace/core'
+import { CommandRegistry, ContextKeys, Keybindings } from '@tensorai-co/workspace/core'
 
 const commands = new CommandRegistry()
 const keys = new Keybindings(commands, new ContextKeys())
@@ -90,14 +106,14 @@ window.addEventListener('keydown', (e) => keys.handle(e).kind !== 'none' && e.pr
 />
 ```
 
-It's all CSS custom properties, so it works on any piece, not only the whole IDE: `applyAppearance(element, appearance)` from `@tensorai-workspace/theme` sets it on an element and everything in it, and `appearanceStyle(appearance)` gives the properties to set yourself. A color key is any token in `theme/styles.css` without its `--ws-color-` prefix. The editor and terminal measure their font again when it changes.
+It's all CSS custom properties, so it works on any piece, not only the whole IDE: `applyAppearance(element, appearance)` from `@tensorai-co/workspace/theme` sets it on an element and everything in it, and `appearanceStyle(appearance)` gives the properties to set yourself. A color key is any token in `theme/styles.css` without its `--ws-color-` prefix. The editor and terminal measure their font again when it changes.
 
 ## Using the editor
 
 ```tsx
-import '@tensorai-workspace/theme/styles.css'
-import '@tensorai-workspace/editor/styles.css'
-import { CodeEditor } from '@tensorai-workspace/editor'
+import '@tensorai-co/workspace/theme/styles.css'
+import '@tensorai-co/workspace/editor/styles.css'
+import { CodeEditor } from '@tensorai-co/workspace/editor'
 
 <CodeEditor value={source} onChange={setSource} path="src/App.tsx" />
 ```
@@ -109,7 +125,7 @@ Searching works without a view too: `findMatches(doc, { search, caseSensitive, w
 The engine also runs without a view, for tests and scripted edits:
 
 ```ts
-import { EditorState, insertNewline } from '@tensorai-workspace/editor/core'
+import { EditorState, insertNewline } from '@tensorai-co/workspace/editor/core'
 
 let state = EditorState.create({ doc: 'function f() {}', language: 'tsx', selection: 14 })
 state = state.apply(insertNewline(state)!)
@@ -123,7 +139,7 @@ Set `data-theme="dark"` on any ancestor for the dark theme, or `applyAppearance(
 The editor has no model of its own. Give it any model, local or remote, as an `InlineCompletionProvider`:
 
 ```tsx
-import type { InlineCompletionProvider } from '@tensorai-workspace/host'
+import type { InlineCompletionProvider } from '@tensorai-co/workspace/host'
 
 const myModel: InlineCompletionProvider = {
   async *provide({ doc, position, language, path }, signal) {
@@ -152,7 +168,7 @@ const myModel: InlineCompletionProvider = {
 Completions, hovers, problems, go to definition, the outline and formatting come from a `LanguageService`, which a host writes over whatever it has: an LSP client, a worker, a model. Every method is optional, and offsets are into the request's `doc`:
 
 ```tsx
-import type { LanguageService } from '@tensorai-workspace/host'
+import type { LanguageService } from '@tensorai-co/workspace/host'
 
 const myLanguageServer: LanguageService = {
   triggerCharacters: ['.'],
@@ -183,9 +199,9 @@ const myLanguageServer: LanguageService = {
 ## Using the explorer
 
 ```tsx
-import '@tensorai-workspace/theme/styles.css'
-import '@tensorai-workspace/explorer/styles.css'
-import { Explorer } from '@tensorai-workspace/explorer'
+import '@tensorai-co/workspace/theme/styles.css'
+import '@tensorai-co/workspace/explorer/styles.css'
+import { Explorer } from '@tensorai-co/workspace/explorer'
 
 <Explorer fs={fileSystem} root="/project" onOpen={(path, { preview }) => open(path, preview)} activePath={path} />
 ```
@@ -193,7 +209,7 @@ import { Explorer } from '@tensorai-workspace/explorer'
 `fs` is a `FileSystem` from `host`. For a test or a demo, use the one in memory:
 
 ```ts
-import { MemoryFileSystem } from '@tensorai-workspace/testing'
+import { MemoryFileSystem } from '@tensorai-co/workspace/testing'
 
 const fs = new MemoryFileSystem({ 'src/main.tsx': 'export {}\n', 'README.md': '# Hi\n' })
 ```
@@ -201,7 +217,7 @@ const fs = new MemoryFileSystem({ 'src/main.tsx': 'export {}\n', 'README.md': '#
 For a tree of anything else, give `<Tree>` a `TreeModel` over your own items:
 
 ```tsx
-import { Tree, TreeModel } from '@tensorai-workspace/tree'
+import { Tree, TreeModel } from '@tensorai-co/workspace/tree'
 
 const model = new TreeModel({
   id: (item) => item.id,
@@ -218,8 +234,8 @@ const model = new TreeModel({
 A `TabsModel` holds tabs of anything, and `<TabStrip>` draws them:
 
 ```tsx
-import '@tensorai-workspace/tabs/styles.css'
-import { TabsModel, TabStrip } from '@tensorai-workspace/tabs'
+import '@tensorai-co/workspace/tabs/styles.css'
+import { TabsModel, TabStrip } from '@tensorai-co/workspace/tabs'
 
 const tabs = new TabsModel<string>((path) => path)
 tabs.open('/src/main.tsx')
@@ -233,8 +249,8 @@ Tabs can be dragged between strips with the same `dragType`. `onClose` lets the 
 ## Using split panes
 
 ```tsx
-import '@tensorai-workspace/split/styles.css'
-import { Pane, Split } from '@tensorai-workspace/split'
+import '@tensorai-co/workspace/split/styles.css'
+import { Pane, Split } from '@tensorai-co/workspace/split'
 
 <Split direction="row" gap={4} storage={localStorage} storageKey="layout">
   <Pane id="sidebar" size={256} min={170} snap visible={open} onVisibleChange={setOpen}>…</Pane>
@@ -250,9 +266,9 @@ import { Pane, Split } from '@tensorai-workspace/split'
 ## Using the terminal
 
 ```tsx
-import '@tensorai-workspace/theme/styles.css'
-import '@tensorai-workspace/terminal/styles.css'
-import { Terminal, TerminalPanel } from '@tensorai-workspace/terminal'
+import '@tensorai-co/workspace/theme/styles.css'
+import '@tensorai-co/workspace/terminal/styles.css'
+import { Terminal, TerminalPanel } from '@tensorai-co/workspace/terminal'
 
 <Terminal host={host} />        // one terminal
 <TerminalPanel host={host} />   // a panel: several, with a list of them
@@ -263,7 +279,7 @@ import { Terminal, TerminalPanel } from '@tensorai-workspace/terminal'
 The emulator also runs with no view, for tests and servers:
 
 ```ts
-import { Screen } from '@tensorai-workspace/terminal/core'
+import { Screen } from '@tensorai-co/workspace/terminal/core'
 
 const screen = new Screen({ cols: 80, rows: 24 })
 screen.write('\x1b[1;32mhello\x1b[0m\r\n')
@@ -273,9 +289,9 @@ screen.view[0].text(true) // 'hello'
 ## Using the Markdown preview
 
 ```tsx
-import '@tensorai-workspace/theme/styles.css'
-import '@tensorai-workspace/markdown/styles.css'
-import { MarkdownPreview, syncScroll } from '@tensorai-workspace/markdown'
+import '@tensorai-co/workspace/theme/styles.css'
+import '@tensorai-co/workspace/markdown/styles.css'
+import { MarkdownPreview, syncScroll } from '@tensorai-co/workspace/markdown'
 
 <MarkdownPreview text={source} />   // anywhere, on its own
 <MarkdownPreview                    // in an IDE
@@ -292,7 +308,7 @@ import { MarkdownPreview, syncScroll } from '@tensorai-workspace/markdown'
 
 `syncScroll(editorView, preview)` scrolls the two together, both ways, and returns a function that stops. It works between any two things that have `topLine`, `scrollToLine` and `onScroll`.
 
-`markdown/core` does the work with no view: `readMarkdown(text)` gives a tree of elements with the source line of each block. The parser is its own package: `parse(text)` from `@tensorai-workspace/markdown-parser` gives the syntax tree, with no DOM.
+`markdown/core` does the work with no view: `readMarkdown(text)` gives a tree of elements with the source line of each block. The parser is its own package: `parse(text)` from `@tensorai-co/workspace/markdown-parser` gives the syntax tree, with no DOM.
 
 ## What the workspace does today
 
@@ -429,11 +445,16 @@ Task lists get boxes, and code has the editor's colors.
 ## Run and test
 
 ```sh
-npm install
+npm install            # also builds dist/
 npm test               # every package's tests; no browser needed
 npm run typecheck
+npm run build          # dist/: JavaScript and declarations, as installs get them
 npm run playground     # the whole IDE (<Workspace>) over files in memory, with a pretend model for ghost text, at http://localhost:5173
 ```
+
+In this repository the parts import each other by their published names (`@tensorai-co/workspace/text`), which
+resolve to the package itself. The `source` condition in `package.json`'s exports takes them to the TypeScript, so the
+tests, the typecheck and the playground run on the source; anywhere else they get `dist/`.
 
 `npm run playground:shell` runs the same with real shells. They run through a bridge in the dev server that only this page can reach: each run has its own token, and it needs Python 3.
 
@@ -454,7 +475,7 @@ workspace/
 ├── packages/
 │   ├── text/          # rope, change sets
 │   ├── highlight/     # engine/ (the tokenizer), languages/ (a grammar per language)
-│   ├── languages/     # registry, rules, incremental tokenizer; data/ (language definitions)
+│   ├── languages/     # registry, rules, incremental tokenizer, react.tsx (Highlighted); data/ (language definitions)
 │   ├── editor/        # core/ (state, commands, keymap, suggest…), view/ (view, input, mouse, folds, features, widgets), react/, styles.css
 │   ├── tree/          # core/ (model, keys), view/, styles.css
 │   ├── explorer/      # core/ (model, names, paths), react/, styles.css
@@ -470,7 +491,8 @@ workspace/
 │   ├── icons/         # resolver, react.tsx; data/ (Seti and Codicons)
 │   └── workspace/     # core/ (commands, keys, when, layout), react/ (Workspace, parts, editors/), styles.css
 ├── apps/playground/   # Vite app for working on the components; src/layout/ is the layout check, shell/ the dev-only bridge
-└── licenses/          # the licenses of the data in NOTICE
+├── licenses/          # the licenses of the data in NOTICE
+└── dist/              # built by `npm run build` (and on install); not in git
 ```
 
 ---

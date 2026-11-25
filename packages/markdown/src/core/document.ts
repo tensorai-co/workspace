@@ -1,4 +1,4 @@
-import { MAX_LENGTH, parse, type Block, type Inline, type ListItem, type Table } from '@tensorai-workspace/markdown-parser'
+import { MAX_LENGTH, parse, type Block, type Inline, type ListItem, type Table } from '@tensorai-co/workspace/markdown-parser'
 import { findFrontMatter, readYaml, writeYaml, type FrontMatter, type Yaml } from './frontMatter.js'
 import { nest, readHtml, type Item } from './html.js'
 import { sameNode, type ViewElement, type ViewNode } from './nodes.js'

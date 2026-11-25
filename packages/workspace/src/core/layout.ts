@@ -1,4 +1,4 @@
-import type { Storage } from '@tensorai-workspace/host'
+import type { Storage } from '@tensorai-co/workspace/host'
 
 /** The parts that can be shown and hidden. */
 export type TogglePart = 'sidebar' | 'panel' | 'auxiliaryBar'

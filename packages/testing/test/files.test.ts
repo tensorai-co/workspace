@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { FileChange } from '@tensorai-workspace/host'
+import type { FileChange } from '@tensorai-co/workspace/host'
 import { MemoryFileSystem } from '../src/index.js'
 
 describe('MemoryFileSystem', () => {

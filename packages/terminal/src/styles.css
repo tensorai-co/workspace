@@ -1,5 +1,5 @@
 /* The terminal. Colors come only from theme tokens; sizes are measured (see the layout check). */
-@import '@tensorai-workspace/icons/styles.css';
+@import '@tensorai-co/workspace/icons/styles.css';
 
 .ws-terminal {
   position: relative;

@@ -1,6 +1,6 @@
-import { parse, safeUrl, type Block, type Inline } from '@tensorai-workspace/markdown-parser'
-import { grammarOf, languageById, loadGrammar, paintLine, Tokenizer } from '@tensorai-workspace/languages'
-import { Text } from '@tensorai-workspace/text'
+import { parse, safeUrl, type Block, type Inline } from '@tensorai-co/workspace/markdown-parser'
+import { grammarOf, languageById, loadGrammar, paintLine, Tokenizer } from '@tensorai-co/workspace/languages'
+import { Text } from '@tensorai-co/workspace/text'
 
 /**
  * Markdown from a language service in hovers and suggestion docs: paragraphs, lists, emphasis,

@@ -1,4 +1,4 @@
-import { parse } from '@tensorai-workspace/markdown-parser'
+import { parse } from '@tensorai-co/workspace/markdown-parser'
 import type { ViewElement, ViewNode } from './nodes.js'
 
 // Raw HTML in Markdown, as GitHub allows it: these tags and attributes and no others. Nothing is ever handed to the

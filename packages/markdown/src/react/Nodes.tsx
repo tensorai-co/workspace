@@ -1,6 +1,7 @@
 import { createElement, memo, useContext, type ReactNode } from 'react'
 import type { ViewElement, ViewNode } from '../core/nodes.js'
-import { Colored, CopyButton } from './Code.js'
+import { Highlighted } from '@tensorai-co/workspace/languages/react'
+import { CopyButton } from './Code.js'
 import { Preview } from './context.js'
 import { Image, Link } from './Media.js'
 
@@ -64,7 +65,7 @@ function CodeBlock({ node }: { node: ViewElement }) {
   return (
     <pre className={node.frontMatter ? 'ws-md-front' : undefined} {...(!fenced && line)}>
       <code {...(fenced && !node.frontMatter && line)}>
-        <Colored text={text} lang={lang} />
+        <Highlighted text={text} language={lang} />
       </code>
       <CopyButton text={text} clipboard={clipboard} />
     </pre>

@@ -1,4 +1,4 @@
-import type { FileSystem, TerminalHost, TerminalSession } from '@tensorai-workspace/host'
+import type { FileSystem, TerminalHost, TerminalSession } from '@tensorai-co/workspace/host'
 
 const meta = document.querySelector<HTMLMetaElement>('meta[name=shell-token]')
 const token = meta?.content

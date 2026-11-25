@@ -1,0 +1,15 @@
+{
+  // What `npm run build` (and `prepare`, on install from git) compiles: every package's src, to JavaScript and
+  // declarations in dist/<package>/src. Imports between packages stay `@tensorai-co/workspace/...`, so they resolve to
+  // this package's own exports wherever it's installed.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "emitDeclarationOnly": false,
+    "rootDir": "packages",
+    "outDir": "dist",
+    "types": ["node"]
+  },
+  "include": ["packages/*/src"]
+}

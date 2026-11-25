@@ -1,5 +1,5 @@
-import type { CompletionItem, CompletionList, LanguageService } from '@tensorai-workspace/host'
-import { ChangeSet, type Text } from '@tensorai-workspace/text'
+import type { CompletionItem, CompletionList, LanguageService } from '@tensorai-co/workspace/host'
+import { ChangeSet, type Text } from '@tensorai-co/workspace/text'
 import { fuzzyScoreGraceful, type MatchRange } from './fuzzy.js'
 import { EditorSelection } from './selection.js'
 import type { EditorState, Transaction, TransactionSpec } from './state.js'

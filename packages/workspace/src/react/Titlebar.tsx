@@ -1,6 +1,6 @@
-import type { CodiconName } from '@tensorai-workspace/icons'
-import { Codicon } from '@tensorai-workspace/icons/react'
-import { Menu } from '@tensorai-workspace/overlays'
+import type { CodiconName } from '@tensorai-co/workspace/icons'
+import { Codicon } from '@tensorai-co/workspace/icons/react'
+import { Menu } from '@tensorai-co/workspace/overlays'
 import { useState, useSyncExternalStore, type ReactNode } from 'react'
 import type { CommandRegistry, ContextKeys, LayoutModel } from '../core/index.js'
 

@@ -3,4 +3,4 @@ export { allLanguages, detectLanguage, grammarOf, languageById, loadGrammar, typ
 export { compileRules, DEFAULT_WORD, type CompiledOnEnterRule, type Rules } from './rules.js'
 export { Tokenizer, type Token } from './tokenizer.js'
 export type { OnEnterRule, Pair, RegexSource, LanguageDefinition, LanguageConfiguration } from './definitions.js'
-export { TOKEN_TYPES, type TokenType } from '@tensorai-workspace/highlight'
+export { TOKEN_TYPES, type TokenType } from '@tensorai-co/workspace/highlight'

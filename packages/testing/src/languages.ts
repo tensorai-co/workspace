@@ -11,7 +11,7 @@ import type {
   LanguageService,
   Location,
   TextEdit,
-} from '@tensorai-workspace/host'
+} from '@tensorai-co/workspace/host'
 
 /** Each answer is a value, or a function of the request. */
 type Answer<R, T> = T | ((request: R) => T)

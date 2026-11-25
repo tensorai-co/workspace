@@ -1,4 +1,4 @@
-import type { DocumentSymbol, LanguageService, Location } from '@tensorai-workspace/host'
+import type { DocumentSymbol, LanguageService, Location } from '@tensorai-co/workspace/host'
 import { Diagnostics } from '../core/diagnostics.js'
 import { isMac } from '../core/keymap.js'
 import { EditorSelection } from '../core/selection.js'

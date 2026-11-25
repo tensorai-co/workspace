@@ -1,4 +1,4 @@
-import type { TreeMessage } from '@tensorai-workspace/tree/core'
+import type { TreeMessage } from '@tensorai-co/workspace/tree/core'
 
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
 const exact = new Intl.Collator(undefined, { numeric: true })

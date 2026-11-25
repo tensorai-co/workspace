@@ -1,4 +1,4 @@
-import type { Clipboard } from '@tensorai-workspace/host'
+import type { Clipboard } from '@tensorai-co/workspace/host'
 
 /** A clipboard that keeps the copied text. */
 export class MemoryClipboard implements Clipboard {

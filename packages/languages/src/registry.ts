@@ -1,4 +1,4 @@
-import { LANGUAGES, loadedLanguage, loadLanguage, resolveLanguage, type Grammar, type LanguageId } from '@tensorai-workspace/highlight'
+import { LANGUAGES, loadedLanguage, loadLanguage, resolveLanguage, type Grammar, type LanguageId } from '@tensorai-co/workspace/highlight'
 import { languageDefinitions } from './data/languages.js'
 import { compileRules, type CompiledOnEnterRule, type Rules } from './rules.js'
 import type { LanguageDefinition } from './definitions.js'

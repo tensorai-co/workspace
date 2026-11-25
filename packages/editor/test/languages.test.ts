@@ -1,5 +1,5 @@
-import { languageById } from '@tensorai-workspace/languages'
-import { ScriptedLanguageService, type ScriptedLanguageOptions } from '@tensorai-workspace/testing'
+import { languageById } from '@tensorai-co/workspace/languages'
+import { ScriptedLanguageService, type ScriptedLanguageOptions } from '@tensorai-co/workspace/testing'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { EditorState, EditorView, renderMarkdown } from '../src/index.js'
 

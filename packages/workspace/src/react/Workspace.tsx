@@ -1,11 +1,11 @@
-import type { EditorView } from '@tensorai-workspace/editor'
-import { Explorer } from '@tensorai-workspace/explorer'
-import type { Clipboard, DocumentSymbol, FileSystem, InlineCompletionProvider, LanguageService, Storage, TerminalHost } from '@tensorai-workspace/host'
-import type { MenuItem } from '@tensorai-workspace/overlays'
-import { Pane, Split } from '@tensorai-workspace/split'
-import { TabAction } from '@tensorai-workspace/tabs'
-import { TerminalPanel, Terminals } from '@tensorai-workspace/terminal'
-import { appearanceKey, appearanceStyle, type Appearance } from '@tensorai-workspace/theme'
+import type { EditorView } from '@tensorai-co/workspace/editor'
+import { Explorer } from '@tensorai-co/workspace/explorer'
+import type { Clipboard, DocumentSymbol, FileSystem, InlineCompletionProvider, LanguageService, Storage, TerminalHost } from '@tensorai-co/workspace/host'
+import type { MenuItem } from '@tensorai-co/workspace/overlays'
+import { Pane, Split } from '@tensorai-co/workspace/split'
+import { TabAction } from '@tensorai-co/workspace/tabs'
+import { TerminalPanel, Terminals } from '@tensorai-co/workspace/terminal'
+import { appearanceKey, appearanceStyle, type Appearance } from '@tensorai-co/workspace/theme'
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { CommandHistory, commandItems, CommandRegistry, ContextKeys, evaluateWhen, fileItems, Keybindings, LayoutModel, lineItems, symbolItems, type Command, type KeybindingRule, type LayoutState, type QuickItem } from '../core/index.js'
 import { ActivityBar, type ActivityAction, type ViewDescriptor } from './ActivityBar.js'
@@ -22,6 +22,8 @@ export interface AuxiliaryBarContent {
   content: ReactNode
   /** Buttons at the right of its title. */
   actions?: ReactNode
+  /** Its width at first, in pixels, until the user drags it: 300 by default. */
+  size?: number
 }
 
 /** Places for the host app's own content. */
@@ -68,6 +70,11 @@ export interface WorkspaceProps {
   languages?: LanguageService
   /** What the command center shows. The folder's name by default. */
   title?: string
+  /**
+   * Whether to draw the titlebar: back and forward, the command center and the layout toggles. On by default; off for
+   * a host with a bar of its own, which can drive the same commands through `onReady`'s API.
+   */
+  titlebar?: boolean
   /** Files open when it starts; the first is active. */
   initialFiles?: readonly string[]
   /** Folders open in the explorer when it starts. */
@@ -476,7 +483,7 @@ export function Workspace(props: WorkspaceProps) {
   return (
     <div
       ref={box}
-      className={`ws-workspace ${props.className ?? ''}`}
+      className={`ws-workspace ${props.titlebar === false ? 'ws-no-titlebar' : ''} ${props.className ?? ''}`}
       data-theme={look?.theme}
       data-layout={look?.layout}
       data-appearance={look ? lookKey : undefined}
@@ -491,7 +498,7 @@ export function Workspace(props: WorkspaceProps) {
       }}
       onBlurCapture={() => keys.cancel()}
     >
-      <Titlebar commands={commands} context={context} layout={layout} title={props.title ?? (root.split('/').filter(Boolean).pop() || root)} center={slots.titlebarCenter} panel={!!terminals} auxiliaryBar={!!auxiliaryBar} />
+      {props.titlebar !== false && <Titlebar commands={commands} context={context} layout={layout} title={props.title ?? (root.split('/').filter(Boolean).pop() || root)} center={slots.titlebarCenter} panel={!!terminals} auxiliaryBar={!!auxiliaryBar} />}
       <div className={`ws-parts ${state.sidebar ? '' : 'ws-no-sidebar'}`}>
         <ActivityBar views={views} actions={activityActions} layout={layout} commands={commands} menu={menu} />
         <Split direction="row" gap={gap} storage={storage} storageKey={`${storageKey}.columns`} className="ws-columns">
@@ -543,7 +550,7 @@ export function Workspace(props: WorkspaceProps) {
             </Split>
           </Pane>
           {auxiliaryBar && (
-            <Pane id="auxiliarybar" size={300} min={170} snap visible={state.auxiliaryBar} onVisibleChange={(v) => layout.setVisible('auxiliaryBar', v)}>
+            <Pane id="auxiliarybar" size={auxiliaryBar.size ?? 300} min={170} snap visible={state.auxiliaryBar} onVisibleChange={(v) => layout.setVisible('auxiliaryBar', v)}>
               <aside className="ws-part ws-auxiliarybar" data-part="auxiliarybar" aria-label={auxiliaryBar.title}>
                 <div className="ws-part-title">
                   <div className="ws-part-tab">

@@ -1,6 +1,6 @@
 /* The tab bar: the connected tabs. Colors come only from theme tokens; sizes are measured. */
-@import '@tensorai-workspace/icons/styles.css';
-@import '@tensorai-workspace/overlays/styles.css';
+@import '@tensorai-co/workspace/icons/styles.css';
+@import '@tensorai-co/workspace/overlays/styles.css';
 
 .ws-tabs {
   /* The row's background, and what the active tab joins onto. A panel sets its own. */

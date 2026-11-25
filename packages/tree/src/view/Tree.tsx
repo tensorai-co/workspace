@@ -1,5 +1,5 @@
-import { useHover } from '@tensorai-workspace/overlays'
-import { Codicon } from '@tensorai-workspace/icons/react'
+import { useHover } from '@tensorai-co/workspace/overlays'
+import { Codicon } from '@tensorai-co/workspace/icons/react'
 import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
 import { runTreeKey } from '../core/keys.js'
 import type { TreeModel, TreeNode } from '../core/model.js'

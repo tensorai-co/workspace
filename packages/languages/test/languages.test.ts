@@ -1,5 +1,5 @@
-import { LANGUAGES, loadLanguage, tokenize, type LanguageId } from '@tensorai-workspace/highlight'
-import { ChangeSet, Text } from '@tensorai-workspace/text'
+import { LANGUAGES, loadLanguage, tokenize, type LanguageId } from '@tensorai-co/workspace/highlight'
+import { ChangeSet, Text } from '@tensorai-co/workspace/text'
 import { describe, expect, it } from 'vitest'
 import { allLanguages, detectLanguage, languageById, loadGrammar, Tokenizer } from '../src/index.js'
 

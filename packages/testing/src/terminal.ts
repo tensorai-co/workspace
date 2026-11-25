@@ -1,4 +1,4 @@
-import type { TerminalHost, TerminalSession } from '@tensorai-workspace/host'
+import type { TerminalHost, TerminalSession } from '@tensorai-co/workspace/host'
 
 export interface ScriptedTerminalOptions {
   /** What every session prints when it opens: recorded output, for instance. */

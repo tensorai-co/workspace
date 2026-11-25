@@ -1,4 +1,4 @@
-import { languageById } from '@tensorai-workspace/languages'
+import { languageById } from '@tensorai-co/workspace/languages'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { cursorDown, cursorUp, EditorState, EditorView, insertText } from '../src/index.js'
 

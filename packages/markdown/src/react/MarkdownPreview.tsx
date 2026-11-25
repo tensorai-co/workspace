@@ -1,4 +1,4 @@
-import type { Clipboard, FileSystem } from '@tensorai-workspace/host'
+import type { Clipboard, FileSystem } from '@tensorai-co/workspace/host'
 import { useDeferredValue, useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react'
 import { readMarkdown, type MarkdownDocument } from '../core/document.js'
 import type { LinkTarget } from '../core/links.js'

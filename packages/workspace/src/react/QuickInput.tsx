@@ -1,5 +1,5 @@
-import { Codicon, FileIcon } from '@tensorai-workspace/icons/react'
-import { detectLanguage } from '@tensorai-workspace/languages'
+import { Codicon, FileIcon } from '@tensorai-co/workspace/icons/react'
+import { detectLanguage } from '@tensorai-co/workspace/languages'
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { keyCaps, type Match, type QuickItem } from '../core/index.js'
 

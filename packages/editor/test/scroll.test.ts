@@ -1,4 +1,4 @@
-import { languageById } from '@tensorai-workspace/languages'
+import { languageById } from '@tensorai-co/workspace/languages'
 import { beforeAll, expect, it, vi } from 'vitest'
 import { EditorState, EditorView } from '../src/index.js'
 

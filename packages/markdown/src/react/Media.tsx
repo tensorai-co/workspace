@@ -1,4 +1,4 @@
-import type { FileSystem } from '@tensorai-workspace/host'
+import type { FileSystem } from '@tensorai-co/workspace/host'
 import { useContext, useEffect, useState, type ComponentProps, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
 import { imageType, resolveImage, resolveLink, type LinkTarget } from '../core/links.js'
 import { Preview } from './context.js'

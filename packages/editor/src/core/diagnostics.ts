@@ -1,5 +1,5 @@
-import type { Diagnostic, LanguageService } from '@tensorai-workspace/host'
-import { ChangeSet } from '@tensorai-workspace/text'
+import type { Diagnostic, LanguageService } from '@tensorai-co/workspace/host'
+import { ChangeSet } from '@tensorai-co/workspace/text'
 import type { EditorState, Transaction } from './state.js'
 
 export interface DiagnosticsConfig {

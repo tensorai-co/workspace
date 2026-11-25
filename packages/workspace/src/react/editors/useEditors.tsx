@@ -1,12 +1,17 @@
-import type { EditorView } from '@tensorai-workspace/editor'
-import { isInside } from '@tensorai-workspace/explorer'
-import type { FileSystem, InlineCompletionProvider, LanguageService, Location } from '@tensorai-workspace/host'
-import { detectLanguage } from '@tensorai-workspace/languages'
-import { lineOfAnchor, readMarkdown, syncScroll, type LinkTarget, type MarkdownView } from '@tensorai-workspace/markdown'
-import { TabsModel } from '@tensorai-workspace/tabs'
+import type { EditorView } from '@tensorai-co/workspace/editor'
+import { isInside } from '@tensorai-co/workspace/explorer'
+import type { FileSystem, InlineCompletionProvider, LanguageService, Location } from '@tensorai-co/workspace/host'
+import { detectLanguage } from '@tensorai-co/workspace/languages'
+import { lineOfAnchor, readMarkdown, syncScroll, type LinkTarget, type MarkdownView } from '@tensorai-co/workspace/markdown'
+import { TabsModel } from '@tensorai-co/workspace/tabs'
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { CommandRegistry, ContextKeys } from '../../core/index.js'
 import { isPreview, pathOf, previewId } from './tabIds.js'
+
+const BINARY = 'The file is not displayed in the text editor because it is either binary or uses an unsupported text encoding.'
+
+/** Binary, as git decides it: a NUL byte in the first 8,000. */
+const isBinary = (data: Uint8Array) => data.subarray(0, 8000).includes(0)
 
 /** One editor group: a tab strip of files and previews. */
 export interface Group {
@@ -51,6 +56,8 @@ export function useEditors({ fs, root, commands, context, notify, initialFiles =
   })
   const [activeId, setActiveId] = useState(groups[0]!.id)
   const [texts, setTexts] = useState<Record<string, string>>({})
+  /** Files that can't be shown as text, with why: binary, or the host couldn't read them. */
+  const [unreadable, setUnreadable] = useState<Record<string, string>>({})
   const [focus, setFocus] = useState(0)
   /** What each group shows, by its id: an editor of a file, or a preview of one. */
   const [editors, setEditors] = useState<Record<number, { path: string; view: EditorView }>>({})
@@ -87,11 +94,14 @@ export function useEditors({ fs, root, commands, context, notify, initialFiles =
   const read = useCallback(
     (path: string) => {
       fs.read(path).then(
-        (data) => setTexts((t) => (path in t ? t : { ...t, [path]: new TextDecoder().decode(data) })),
-        (e: Error) => notify(e.message),
+        (data) => {
+          if (isBinary(data)) setUnreadable((u) => ({ ...u, [path]: BINARY }))
+          else setTexts((t) => (path in t ? t : { ...t, [path]: new TextDecoder().decode(data) }))
+        },
+        (e: Error) => setUnreadable((u) => ({ ...u, [path]: e.message })),
       )
     },
-    [fs, notify],
+    [fs],
   )
 
   // A group whose last tab went away goes too, unless it's the only one.
@@ -423,6 +433,7 @@ export function useEditors({ fs, root, commands, context, notify, initialFiles =
     groups,
     group,
     texts,
+    unreadable,
     read,
     focus,
     previewed,

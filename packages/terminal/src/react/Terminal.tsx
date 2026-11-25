@@ -1,4 +1,4 @@
-import type { Clipboard, TerminalHost } from '@tensorai-workspace/host'
+import type { Clipboard, TerminalHost } from '@tensorai-co/workspace/host'
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { TerminalInstance } from '../core/terminals.js'
 import { TerminalView, type TerminalViewConfig } from '../view/view.js'

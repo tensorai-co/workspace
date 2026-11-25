@@ -1,4 +1,4 @@
-import type { Text } from '@tensorai-workspace/text'
+import type { Text } from '@tensorai-co/workspace/text'
 import { EditorSelection, SelectionRange } from './selection.js'
 import type { EditorState, TransactionSpec } from './state.js'
 

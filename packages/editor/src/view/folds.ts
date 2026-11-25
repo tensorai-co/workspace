@@ -1,4 +1,4 @@
-import { codicon, iconSvg } from '@tensorai-workspace/icons'
+import { codicon, iconSvg } from '@tensorai-co/workspace/icons'
 import { foldRanges, Folds, type FoldRange } from '../core/folding.js'
 import type { EditorState } from '../core/state.js'
 

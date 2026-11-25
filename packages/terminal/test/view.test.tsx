@@ -1,4 +1,4 @@
-import { MemoryClipboard, ScriptedTerminalHost } from '@tensorai-workspace/testing'
+import { MemoryClipboard, ScriptedTerminalHost } from '@tensorai-co/workspace/testing'
 import { act, cleanup, fireEvent, render, screen as dom, waitFor } from '@testing-library/react'
 import { StrictMode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

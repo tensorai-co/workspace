@@ -1,4 +1,4 @@
-import { ScriptedCompletionProvider, type ScriptedCompletionOptions } from '@tensorai-workspace/testing'
+import { ScriptedCompletionProvider, type ScriptedCompletionOptions } from '@tensorai-co/workspace/testing'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { EditorState, InlineCompletions, insertText, nextLineLength, nextWordLength, redo, undo, type Command, type TransactionSpec } from '../src/core/index.js'
 

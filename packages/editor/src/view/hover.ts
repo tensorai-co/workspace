@@ -1,5 +1,5 @@
-import type { Diagnostic } from '@tensorai-workspace/host'
-import { codicon, iconSvg } from '@tensorai-workspace/icons'
+import type { Diagnostic } from '@tensorai-co/workspace/host'
+import { codicon, iconSvg } from '@tensorai-co/workspace/icons'
 import { renderMarkdown } from './markdown.js'
 
 /** Hovers keep this far from the window's right edge. */

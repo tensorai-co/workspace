@@ -1,4 +1,4 @@
-import type { Storage } from '@tensorai-workspace/host'
+import type { Storage } from '@tensorai-co/workspace/host'
 
 /** Storage that keeps its values in a map. */
 export class MemoryStorage implements Storage {

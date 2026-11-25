@@ -1,5 +1,5 @@
-import type { InlineCompletionProvider, LanguageService, Location } from '@tensorai-workspace/host'
-import { detectLanguage, languageById } from '@tensorai-workspace/languages'
+import type { InlineCompletionProvider, LanguageService, Location } from '@tensorai-co/workspace/host'
+import { detectLanguage, languageById } from '@tensorai-co/workspace/languages'
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { EditorState } from '../core/state.js'
 import { EditorView } from '../view/view.js'

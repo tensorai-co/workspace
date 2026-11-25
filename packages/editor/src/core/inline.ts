@@ -1,5 +1,5 @@
-import type { InlineCompletion, InlineCompletionProvider, InlineCompletionRequest } from '@tensorai-workspace/host'
-import { ChangeSet, type Text } from '@tensorai-workspace/text'
+import type { InlineCompletion, InlineCompletionProvider, InlineCompletionRequest } from '@tensorai-co/workspace/host'
+import { ChangeSet, type Text } from '@tensorai-co/workspace/text'
 import type { EditorState, Transaction, TransactionSpec } from './state.js'
 
 export interface InlineCompletionsConfig {

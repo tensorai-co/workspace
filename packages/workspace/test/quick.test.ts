@@ -1,4 +1,4 @@
-import { MemoryStorage } from '@tensorai-workspace/testing'
+import { MemoryStorage } from '@tensorai-co/workspace/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { CommandHistory, commandItems, CommandRegistry, ContextKeys, fileItems, keyCaps, lineItems, matchesCommand, matchesWords, scoreFile } from '../src/core/index.js'
 

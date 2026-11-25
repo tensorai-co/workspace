@@ -1,5 +1,5 @@
-import type { ExplorerModel } from '@tensorai-workspace/explorer'
-import type { Terminals } from '@tensorai-workspace/terminal'
+import type { ExplorerModel } from '@tensorai-co/workspace/explorer'
+import type { Terminals } from '@tensorai-co/workspace/terminal'
 import { checkFind } from './checkFind'
 import { checkFold } from './checkFold'
 import { checkLanguages } from './checkLanguages'

@@ -1,4 +1,4 @@
-import type { InlineCompletion, InlineCompletionProvider, InlineCompletionRequest } from '@tensorai-workspace/host'
+import type { InlineCompletion, InlineCompletionProvider, InlineCompletionRequest } from '@tensorai-co/workspace/host'
 
 /** What a scripted provider suggests for a request. */
 export type ScriptedSuggestion = string | InlineCompletion | readonly InlineCompletion[] | undefined

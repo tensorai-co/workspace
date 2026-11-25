@@ -1,4 +1,4 @@
-import type { Text } from '@tensorai-workspace/text'
+import type { Text } from '@tensorai-co/workspace/text'
 import type { Ghost, NextEdit } from '../core/inline.js'
 
 /** How a piece of a drawn row looks: ghost text, text an edit removes or adds, or the "⋯" of a folded line. */

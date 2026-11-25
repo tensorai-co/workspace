@@ -1,7 +1,17 @@
 {
-  "name": "workspace",
-  "private": true,
-  "description": "A browser IDE as React packages: editor, file explorer, tabs, split panes, terminal and Markdown preview.",
+  "name": "@tensorai-co/workspace",
+  "version": "0.1.0",
+  "description": "IDE components for TypeScript and React with no third-party runtime code: a code editor, file explorer, tabs, split panes, terminal and Markdown preview, alone or as one IDE.",
+  "keywords": [
+    "ide",
+    "editor",
+    "code-editor",
+    "terminal",
+    "file-explorer",
+    "markdown",
+    "syntax-highlighting",
+    "react"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/tensorai-co/workspace#readme",
   "bugs": {
@@ -15,16 +25,184 @@
   "engines": {
     "node": ">=24"
   },
-  "workspaces": [
-    "packages/*",
-    "apps/*"
+  "files": [
+    "dist",
+    "packages/*/src/**",
+    "NOTICE",
+    "licenses"
+  ],
+  "exports": {
+    ".": {
+      "source": "./packages/workspace/src/index.ts",
+      "types": "./dist/workspace/src/index.d.ts",
+      "default": "./dist/workspace/src/index.js"
+    },
+    "./core": {
+      "source": "./packages/workspace/src/core/index.ts",
+      "types": "./dist/workspace/src/core/index.d.ts",
+      "default": "./dist/workspace/src/core/index.js"
+    },
+    "./editor": {
+      "source": "./packages/editor/src/index.ts",
+      "types": "./dist/editor/src/index.d.ts",
+      "default": "./dist/editor/src/index.js"
+    },
+    "./editor/core": {
+      "source": "./packages/editor/src/core/index.ts",
+      "types": "./dist/editor/src/core/index.d.ts",
+      "default": "./dist/editor/src/core/index.js"
+    },
+    "./editor/styles.css": "./packages/editor/src/styles.css",
+    "./explorer": {
+      "source": "./packages/explorer/src/index.ts",
+      "types": "./dist/explorer/src/index.d.ts",
+      "default": "./dist/explorer/src/index.js"
+    },
+    "./explorer/core": {
+      "source": "./packages/explorer/src/core/index.ts",
+      "types": "./dist/explorer/src/core/index.d.ts",
+      "default": "./dist/explorer/src/core/index.js"
+    },
+    "./explorer/styles.css": "./packages/explorer/src/styles.css",
+    "./highlight": {
+      "source": "./packages/highlight/src/index.ts",
+      "types": "./dist/highlight/src/index.d.ts",
+      "default": "./dist/highlight/src/index.js"
+    },
+    "./host": {
+      "source": "./packages/host/src/index.ts",
+      "types": "./dist/host/src/index.d.ts",
+      "default": "./dist/host/src/index.js"
+    },
+    "./icons": {
+      "source": "./packages/icons/src/index.ts",
+      "types": "./dist/icons/src/index.d.ts",
+      "default": "./dist/icons/src/index.js"
+    },
+    "./icons/react": {
+      "source": "./packages/icons/src/react.tsx",
+      "types": "./dist/icons/src/react.d.ts",
+      "default": "./dist/icons/src/react.js"
+    },
+    "./icons/styles.css": "./packages/icons/src/styles.css",
+    "./languages": {
+      "source": "./packages/languages/src/index.ts",
+      "types": "./dist/languages/src/index.d.ts",
+      "default": "./dist/languages/src/index.js"
+    },
+    "./languages/react": {
+      "source": "./packages/languages/src/react.tsx",
+      "types": "./dist/languages/src/react.d.ts",
+      "default": "./dist/languages/src/react.js"
+    },
+    "./markdown": {
+      "source": "./packages/markdown/src/index.ts",
+      "types": "./dist/markdown/src/index.d.ts",
+      "default": "./dist/markdown/src/index.js"
+    },
+    "./markdown-parser": {
+      "source": "./packages/markdown-parser/src/index.ts",
+      "types": "./dist/markdown-parser/src/index.d.ts",
+      "default": "./dist/markdown-parser/src/index.js"
+    },
+    "./markdown/core": {
+      "source": "./packages/markdown/src/core/index.ts",
+      "types": "./dist/markdown/src/core/index.d.ts",
+      "default": "./dist/markdown/src/core/index.js"
+    },
+    "./markdown/styles.css": "./packages/markdown/src/styles.css",
+    "./overlays": {
+      "source": "./packages/overlays/src/index.ts",
+      "types": "./dist/overlays/src/index.d.ts",
+      "default": "./dist/overlays/src/index.js"
+    },
+    "./overlays/styles.css": "./packages/overlays/src/styles.css",
+    "./split": {
+      "source": "./packages/split/src/index.ts",
+      "types": "./dist/split/src/index.d.ts",
+      "default": "./dist/split/src/index.js"
+    },
+    "./split/core": {
+      "source": "./packages/split/src/core/index.ts",
+      "types": "./dist/split/src/core/index.d.ts",
+      "default": "./dist/split/src/core/index.js"
+    },
+    "./split/styles.css": "./packages/split/src/styles.css",
+    "./styles.css": "./packages/workspace/src/styles.css",
+    "./tabs": {
+      "source": "./packages/tabs/src/index.ts",
+      "types": "./dist/tabs/src/index.d.ts",
+      "default": "./dist/tabs/src/index.js"
+    },
+    "./tabs/core": {
+      "source": "./packages/tabs/src/core/index.ts",
+      "types": "./dist/tabs/src/core/index.d.ts",
+      "default": "./dist/tabs/src/core/index.js"
+    },
+    "./tabs/styles.css": "./packages/tabs/src/styles.css",
+    "./terminal": {
+      "source": "./packages/terminal/src/index.ts",
+      "types": "./dist/terminal/src/index.d.ts",
+      "default": "./dist/terminal/src/index.js"
+    },
+    "./terminal/core": {
+      "source": "./packages/terminal/src/core/index.ts",
+      "types": "./dist/terminal/src/core/index.d.ts",
+      "default": "./dist/terminal/src/core/index.js"
+    },
+    "./terminal/styles.css": "./packages/terminal/src/styles.css",
+    "./testing": {
+      "source": "./packages/testing/src/index.ts",
+      "types": "./dist/testing/src/index.d.ts",
+      "default": "./dist/testing/src/index.js"
+    },
+    "./text": {
+      "source": "./packages/text/src/index.ts",
+      "types": "./dist/text/src/index.d.ts",
+      "default": "./dist/text/src/index.js"
+    },
+    "./theme": {
+      "source": "./packages/theme/src/index.ts",
+      "types": "./dist/theme/src/index.d.ts",
+      "default": "./dist/theme/src/index.js"
+    },
+    "./theme/styles.css": "./packages/theme/src/styles.css",
+    "./tree": {
+      "source": "./packages/tree/src/index.ts",
+      "types": "./dist/tree/src/index.d.ts",
+      "default": "./dist/tree/src/index.js"
+    },
+    "./tree/core": {
+      "source": "./packages/tree/src/core/index.ts",
+      "types": "./dist/tree/src/core/index.d.ts",
+      "default": "./dist/tree/src/core/index.js"
+    },
+    "./tree/styles.css": "./packages/tree/src/styles.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
   ],
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
     "typecheck": "tsc -b",
     "test": "vitest run",
     "test:watch": "vitest",
-    "playground": "npm run dev -w @tensorai-workspace/playground",
-    "playground:shell": "npm run dev:shell -w @tensorai-workspace/playground"
+    "playground": "vite apps/playground",
+    "playground:shell": "WORKSPACE_SHELL=1 vite apps/playground"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.3",

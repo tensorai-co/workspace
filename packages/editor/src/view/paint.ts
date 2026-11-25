@@ -1,4 +1,4 @@
-import { paintLine, type Token } from '@tensorai-workspace/languages'
+import { paintLine, type Token } from '@tensorai-co/workspace/languages'
 import type { Mark } from './overlay.js'
 
 /** A stretch of a line that looks one way: its text, and the classes that color it. */

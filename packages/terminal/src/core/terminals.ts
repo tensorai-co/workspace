@@ -1,4 +1,4 @@
-import type { TerminalHost, TerminalSession } from '@tensorai-workspace/host'
+import type { TerminalHost, TerminalSession } from '@tensorai-co/workspace/host'
 import { Emitter } from './events.js'
 import { Screen } from './screen.js'
 

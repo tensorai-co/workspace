@@ -1,5 +1,5 @@
-import { resolveGrammar, tokenizeLine, type Grammar, type State, type Token } from '@tensorai-workspace/highlight'
-import type { ChangeSet, Text } from '@tensorai-workspace/text'
+import { resolveGrammar, tokenizeLine, type Grammar, type State, type Token } from '@tensorai-co/workspace/highlight'
+import type { ChangeSet, Text } from '@tensorai-co/workspace/text'
 
 export type { Token }
 

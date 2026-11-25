@@ -1,4 +1,4 @@
-import type { Terminals } from '@tensorai-workspace/terminal'
+import type { Terminals } from '@tensorai-co/workspace/terminal'
 import * as ref from './reference'
 import { all, border, box, css, find, round, settle, textBox, type Check } from './measure'
 

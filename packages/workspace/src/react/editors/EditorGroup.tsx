@@ -1,10 +1,10 @@
-import { CodeEditor, type EditorView } from '@tensorai-workspace/editor'
-import { baseName, relativePath } from '@tensorai-workspace/explorer'
-import { Codicon, FileIcon } from '@tensorai-workspace/icons/react'
-import { detectLanguage } from '@tensorai-workspace/languages'
-import { MarkdownPreview, type MarkdownView } from '@tensorai-workspace/markdown'
-import { Menu, type MenuItem } from '@tensorai-workspace/overlays'
-import { distinguish, runTabsKey, TabAction, TabStrip, type Tab } from '@tensorai-workspace/tabs'
+import { CodeEditor, type EditorView } from '@tensorai-co/workspace/editor'
+import { baseName, relativePath } from '@tensorai-co/workspace/explorer'
+import { Codicon, FileIcon } from '@tensorai-co/workspace/icons/react'
+import { detectLanguage } from '@tensorai-co/workspace/languages'
+import { MarkdownPreview, type MarkdownView } from '@tensorai-co/workspace/markdown'
+import { Menu, type MenuItem } from '@tensorai-co/workspace/overlays'
+import { distinguish, runTabsKey, TabAction, TabStrip, type Tab } from '@tensorai-co/workspace/tabs'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import type { CommandRegistry } from '../../core/index.js'
 import { isPreview, pathOf } from './tabIds.js'
@@ -33,9 +33,10 @@ export function EditorGroup({ group, editors: e, commands }: EditorGroupProps) {
   const tip = (command: string, title?: string) => commands.tooltip(command, title)
 
   const { read } = e
+  const unreadable = path === undefined ? undefined : e.unreadable[path]
   useEffect(() => {
-    if (path !== undefined && text === undefined) read(path)
-  }, [path, text, read])
+    if (path !== undefined && text === undefined && unreadable === undefined) read(path)
+  }, [path, text, unreadable, read])
 
   const take = () => (asPreview ? preview.current?.element.focus({ preventScroll: true }) : view.current?.focus())
 
@@ -150,6 +151,11 @@ export function EditorGroup({ group, editors: e, commands }: EditorGroupProps) {
               ))}
           </div>
           <div className="ws-editor-host">
+            {unreadable !== undefined && text === undefined && (
+              <div className="ws-editor-message" role="status">
+                {unreadable}
+              </div>
+            )}
             {text !== undefined && (
               <CodeEditor
                 key={path}

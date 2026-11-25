@@ -1,13 +1,13 @@
 /* The full IDE. Colors come only from theme tokens; sizes and places are measured (see the layout check). */
-@import '@tensorai-workspace/theme/styles.css';
-@import '@tensorai-workspace/icons/styles.css';
-@import '@tensorai-workspace/editor/styles.css';
-@import '@tensorai-workspace/explorer/styles.css';
-@import '@tensorai-workspace/markdown/styles.css';
-@import '@tensorai-workspace/overlays/styles.css';
-@import '@tensorai-workspace/split/styles.css';
-@import '@tensorai-workspace/tabs/styles.css';
-@import '@tensorai-workspace/terminal/styles.css';
+@import '@tensorai-co/workspace/theme/styles.css';
+@import '@tensorai-co/workspace/icons/styles.css';
+@import '@tensorai-co/workspace/editor/styles.css';
+@import '@tensorai-co/workspace/explorer/styles.css';
+@import '@tensorai-co/workspace/markdown/styles.css';
+@import '@tensorai-co/workspace/overlays/styles.css';
+@import '@tensorai-co/workspace/split/styles.css';
+@import '@tensorai-co/workspace/tabs/styles.css';
+@import '@tensorai-co/workspace/terminal/styles.css';
 
 .ws-workspace {
   display: grid;
@@ -19,6 +19,14 @@
   font-family: var(--ws-font-ui);
   font-size: 13px;
   line-height: 18.2px;
+}
+
+/* Without a titlebar, the host's own bar is above: the parts start at the top. */
+.ws-workspace.ws-no-titlebar {
+  grid-template-rows: minmax(0, 1fr) 28px;
+}
+.ws-no-titlebar > .ws-parts {
+  padding-top: var(--ws-gap);
 }
 
 /* ------------------------------------------------------------------ titlebar */
@@ -366,6 +374,17 @@
   flex: 1;
   min-height: 0;
 }
+/* A file that can't be shown as text, and why. */
+.ws-editor-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  color: var(--ws-color-descriptionForeground);
+  font-size: 13px;
+  text-align: center;
+}
 
 /* ------------------------------------------------------------------ status bar */
 
@@ -673,6 +692,9 @@
 }
 [data-layout='flat'] .ws-parts {
   border-top: 1px solid var(--ws-flat-line);
+}
+[data-layout='flat'].ws-no-titlebar > .ws-parts {
+  border-top: 0;
 }
 [data-layout='flat'] .ws-statusbar {
   border-top: 1px solid var(--ws-flat-line);

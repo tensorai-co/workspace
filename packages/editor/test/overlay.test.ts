@@ -1,4 +1,4 @@
-import { Text } from '@tensorai-workspace/text'
+import { Text } from '@tensorai-co/workspace/text'
 import { describe, expect, it } from 'vitest'
 import { buildOverlay, innerChange, overlaysFor } from '../src/view/overlay.js'
 

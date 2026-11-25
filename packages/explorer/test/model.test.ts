@@ -1,4 +1,4 @@
-import { MemoryFileSystem } from '@tensorai-workspace/testing'
+import { MemoryFileSystem } from '@tensorai-co/workspace/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { checkName, compareEntries, ExplorerModel, type ExplorerModelOptions } from '../src/core/index.js'
 
@@ -132,6 +132,14 @@ describe('deleting', () => {
     expect(model.deleteQuestion(['/README.md']).message).toBe("Are you sure you want to permanently delete 'README.md'?")
     expect(model.deleteQuestion(['/src']).message).toBe("Are you sure you want to permanently delete 'src' and its contents?")
     expect(model.deleteQuestion(['/README.md', '/.gitignore']).message).toBe('Are you sure you want to permanently delete the following 2 files?')
+  })
+
+  it('asks to move to the trash when the file system has one', async () => {
+    const model = new ExplorerModel({ fs: new MemoryFileSystem(files, { deletes: 'trash' }), root: '/' })
+    await model.tree.load()
+    expect(model.trash).toBe(true)
+    expect(model.deleteQuestion(['/src'])).toEqual({ message: "Are you sure you want to delete 'src' and its contents?", detail: 'You can restore this file from the Trash.' })
+    expect(model.deleteQuestion(['/README.md', '/.gitignore']).detail).toContain('You can restore these files from the Trash.')
   })
 })
 

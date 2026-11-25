@@ -1,4 +1,4 @@
-import type { Clipboard, FileSystem } from '@tensorai-workspace/host'
+import type { Clipboard, FileSystem } from '@tensorai-co/workspace/host'
 import { createContext } from 'react'
 import type { LinkTarget, Place } from '../core/links.js'
 

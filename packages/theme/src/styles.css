@@ -3,6 +3,16 @@
 @import './syntax.css';
 @import './shapes.css';
 
+/*
+ * The components' sizes are content-box, as browsers have it, wherever they don't say otherwise: so a host's
+ * `* { box-sizing: border-box }` reset doesn't shrink them. One attribute is enough to win over `*`; each component's
+ * own `box-sizing: border-box` comes after this file, so it still wins where it's set.
+ */
+[class^='ws-'],
+[class*=' ws-'] {
+  box-sizing: content-box;
+}
+
 :root {
   /* The UI font stack, per platform. */
   --ws-font-ui: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
