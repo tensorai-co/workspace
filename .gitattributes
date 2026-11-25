@@ -4,3 +4,7 @@
 *.ico binary
 *.woff binary
 *.woff2 binary
+
+# Keep byte-exact: terminal captures and third-party license texts
+*.vt -text
+licenses/** -text
