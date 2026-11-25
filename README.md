@@ -71,6 +71,7 @@ import { StatusItem, Workspace } from '@tensorai-co/workspace'
 - **The parts:** the layout, sizes and the sidebar's view are kept in `storage` under `storageKey`.
 - **The secondary side bar:** `auxiliaryBar` takes a `title`, its `content`, `actions` for its title and a `size` to start at.
 - **Its own bar or yours:** `titlebar={false}` leaves the titlebar out, for an app that has a bar of its own. The same commands (`workbench.action.toggleSidebarVisibility`, `togglePanel`, `toggleAuxiliaryBar`) and `api.layout` drive the parts from there.
+- **The activity bar, at the side or in your bar:** `activityBar={false}` leaves it out, and `<ActivityToolbar workspace={api} />` draws its buttons (the application menu, a button per view, `activityActions`) as a row anywhere, working the same; its menus open below it. `api.views`, `api.activityActions` and `api.menu()` are there to build your own.
 - **Files it can't show:** a binary file, or one the host fails to read, opens to a message saying why instead of an editor.
 - **Deletes that can be undone:** a `FileSystem` with `deletes: 'trash'` gets "Move to Trash" in the explorer, as VS Code asks it, instead of "Delete Permanently".
 

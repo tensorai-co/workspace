@@ -1,8 +1,8 @@
 import { MemoryFileSystem, MemoryStorage, ScriptedLanguageService, ScriptedTerminalHost } from '@tensorai-co/workspace/testing'
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { StrictMode } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { StatusItem, Workspace, type WorkspaceApi, type WorkspaceProps } from '../src/index.js'
+import { ActivityToolbar, StatusItem, Workspace, type WorkspaceApi, type WorkspaceProps } from '../src/index.js'
 
 afterEach(cleanup)
 // The editor watches its size; jsdom has no layout to watch.
@@ -45,6 +45,25 @@ describe('Workspace', () => {
     expect(container.querySelector('.ws-no-titlebar .ws-activitybar')).not.toBeNull()
     act(() => void api().commands.execute('workbench.action.toggleSidebarVisibility'))
     expect(api().layout.state.sidebar).toBe(false)
+  })
+
+  it('leaves the activity bar out, and puts its buttons wherever the host draws an ActivityToolbar', async () => {
+    const { container, api } = await open({ activityBar: false, views: [{ id: 'search', title: 'Search', icon: 'search-large', content: <p>Find</p> }] })
+    expect(container.querySelector('.ws-activitybar')).toBeNull()
+    expect(api().views.map((v) => v.id)).toEqual(['explorer', 'search'])
+    const bar = render(<ActivityToolbar workspace={api()} />)
+    const tabs = within(bar.container).getAllByRole('tab')
+    expect(tabs.map((t) => t.getAttribute('aria-label'))).toEqual(['Explorer', 'Search'])
+    expect(within(bar.container).getByRole('tablist').getAttribute('aria-orientation')).toBe('horizontal')
+    // The same layout: a view's button shows it, and hides the sidebar when it's showing.
+    fireEvent.click(tabs[1]!)
+    expect(api().layout.state).toMatchObject({ view: 'search', sidebar: true })
+    expect(tabs[1]!.getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(tabs[1]!)
+    expect(api().layout.state.sidebar).toBe(false)
+    // The application menu, read when it opens, under its button.
+    fireEvent.click(within(bar.container).getByRole('button', { name: 'Application Menu' }))
+    expect(screen.getAllByRole('menuitem').some((i) => i.textContent?.includes('Show All Commands') || i.textContent?.includes('Toggle Primary Side Bar'))).toBe(true)
   })
 
   it('says why a file isn’t shown: binary, or the host couldn’t read it', async () => {

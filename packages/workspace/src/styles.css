@@ -247,6 +247,11 @@
 .ws-sidebar {
   border-left-color: transparent;
   border-radius: 0 var(--ws-radius) var(--ws-radius) 0;
+}
+/* Without the activity bar, the sidebar is a card of its own. */
+.ws-no-activitybar .ws-sidebar {
+  border-left-color: var(--ws-color-surface-border, var(--ws-color-editorWidget-border));
+  border-radius: var(--ws-radius);
   color: var(--ws-color-sideBar-foreground);
   background: var(--ws-color-sideBar-background);
 }
@@ -701,4 +706,39 @@
 }
 [data-layout='flat'] .ws-split:not(.ws-gaps) > .ws-pane:not(.ws-first)::before {
   background: var(--ws-flat-line);
+}
+
+/* ------------------------------------------------------------------ activity toolbar */
+
+/* The activity bar as a row of toolbar buttons, in a host's own bar (<ActivityToolbar>). */
+.ws-activitybar.ws-horizontal {
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.ws-horizontal .ws-activity-menu {
+  height: auto;
+  padding: 0;
+}
+.ws-horizontal .ws-activity-views,
+.ws-horizontal .ws-activity-actions {
+  flex-direction: row;
+  gap: 2px;
+  margin: 0;
+}
+.ws-horizontal .ws-activity-item,
+.ws-horizontal .ws-activity-menu-button {
+  width: 28px;
+  height: 28px;
+}
+.ws-horizontal .ws-activity-indicator,
+.ws-horizontal .ws-activity-menu-button::before {
+  inset: 0;
 }

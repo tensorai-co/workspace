@@ -1,7 +1,7 @@
 import type { EditorView } from '@tensorai-co/workspace/editor'
 import { Explorer } from '@tensorai-co/workspace/explorer'
-import type { Clipboard, DocumentSymbol, FileSystem, InlineCompletionProvider, LanguageService, Storage, TerminalHost } from '@tensorai-co/workspace/host'
 import type { MenuItem } from '@tensorai-co/workspace/overlays'
+import type { Clipboard, DocumentSymbol, FileSystem, InlineCompletionProvider, LanguageService, Storage, TerminalHost } from '@tensorai-co/workspace/host'
 import { Pane, Split } from '@tensorai-co/workspace/split'
 import { TabAction } from '@tensorai-co/workspace/tabs'
 import { TerminalPanel, Terminals } from '@tensorai-co/workspace/terminal'
@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import { CommandHistory, commandItems, CommandRegistry, ContextKeys, evaluateWhen, fileItems, Keybindings, LayoutModel, lineItems, symbolItems, type Command, type KeybindingRule, type LayoutState, type QuickItem } from '../core/index.js'
 import { ActivityBar, type ActivityAction, type ViewDescriptor } from './ActivityBar.js'
 import { EditorArea } from './editors/EditorArea.js'
+import { applicationMenu } from './menu.js'
 import { useEditors } from './editors/useEditors.js'
 import { QuickInput } from './QuickInput.js'
 import { StatusBar } from './StatusBar.js'
@@ -51,6 +52,12 @@ export interface WorkspaceApi {
   notify(message: string): void
   /** Opens the quick input with a value: "" for files, ">" for commands, ":" to go to a line. */
   quickOpen(value?: string): void
+  /** The sidebar's views, the Explorer first, as the activity bar lists them. */
+  readonly views: readonly ViewDescriptor[]
+  /** The buttons at the end of the activity bar. */
+  readonly activityActions: readonly ActivityAction[]
+  /** The application menu as it is now: every command with a category that applies, by category. */
+  menu(): MenuItem[][]
 }
 
 export interface WorkspaceProps {
@@ -75,6 +82,11 @@ export interface WorkspaceProps {
    * a host with a bar of its own, which can drive the same commands through `onReady`'s API.
    */
   titlebar?: boolean
+  /**
+   * Whether to draw the activity bar at the side: the application menu, an item per view, and `activityActions`. On by
+   * default; off for a host that puts the same buttons in a bar of its own with `<ActivityToolbar>`.
+   */
+  activityBar?: boolean
   /** Files open when it starts; the first is active. */
   initialFiles?: readonly string[]
   /** Folders open in the explorer when it starts. */
@@ -102,8 +114,6 @@ export interface WorkspaceProps {
 
 /** The parts focus can be in, from the `data-part` of the element that has it. */
 const FOCUS_KEYS: Record<string, string> = { sidebar: 'sideBarFocus', editor: 'editorAreaFocus', panel: 'panelFocus', auxiliarybar: 'auxiliaryBarFocus' }
-
-const CATEGORIES = ['File', 'Edit', 'Selection', 'View', 'Go', 'Run', 'Terminal', 'Help']
 
 /** Every file under a folder, as Quick Open lists them, leaving out .git and node_modules. */
 async function listFiles(fs: FileSystem, root: string, limit = 50_000): Promise<string[]> {
@@ -261,8 +271,8 @@ export function Workspace(props: WorkspaceProps) {
     }
   }, [listingSymbols, editors.view])
 
-  const latest = useRef({ terminals, editors, auxiliaryBar, views, openQuick })
-  latest.current = { terminals, editors, auxiliaryBar, views, openQuick }
+  const latest = useRef({ terminals, editors, auxiliaryBar, views, activityActions, openQuick })
+  latest.current = { terminals, editors, auxiliaryBar, views, activityActions, openQuick }
   useEffect(() => {
     const focused = (key: string) => !!context.get(key)
     const showTerminal = (create = false) => {
@@ -414,6 +424,13 @@ export function Workspace(props: WorkspaceProps) {
       },
       notify,
       quickOpen: (value = '') => latest.current.openQuick(value),
+      get views() {
+        return latest.current.views
+      },
+      get activityActions() {
+        return latest.current.activityActions ?? []
+      },
+      menu: () => applicationMenu(commands, context),
     }),
     [commands, context, layout, keys, notify],
   )
@@ -422,20 +439,8 @@ export function Workspace(props: WorkspaceProps) {
     return () => onReady?.(null)
   }, [api, onReady])
 
-  // The application menu: every command with a category, by category.
-  const menu: MenuItem[][] = useMemo(() => {
-    const by = new Map<string, MenuItem[]>()
-    for (const c of commands.list()) {
-      if (!c.category || !context.matches(c.when)) continue
-      const list = by.get(c.category) ?? []
-      list.push({ label: c.title, keys: commands.keyLabel(c.id), run: () => void commands.execute(c.id) })
-      by.set(c.category, list)
-    }
-    const order = (name: string) => (CATEGORIES.includes(name) ? CATEGORIES.indexOf(name) : CATEGORIES.length)
-    return [...by.entries()].sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b)).map(([, items]) => items)
-    // Read when the menu draws: the commands, and what's true now.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [commands, context, commands.version, context.version])
+  // The application menu, read when it opens: the commands, and what's true then.
+  const menu = useCallback(() => applicationMenu(commands, context), [commands, context])
 
   // What the quick input lists, by what its value starts with.
   const quickItems = useMemo((): QuickItem[] => {
@@ -483,7 +488,7 @@ export function Workspace(props: WorkspaceProps) {
   return (
     <div
       ref={box}
-      className={`ws-workspace ${props.titlebar === false ? 'ws-no-titlebar' : ''} ${props.className ?? ''}`}
+      className={`ws-workspace ${props.titlebar === false ? 'ws-no-titlebar' : ''} ${props.activityBar === false ? 'ws-no-activitybar' : ''} ${props.className ?? ''}`}
       data-theme={look?.theme}
       data-layout={look?.layout}
       data-appearance={look ? lookKey : undefined}
@@ -500,7 +505,7 @@ export function Workspace(props: WorkspaceProps) {
     >
       {props.titlebar !== false && <Titlebar commands={commands} context={context} layout={layout} title={props.title ?? (root.split('/').filter(Boolean).pop() || root)} center={slots.titlebarCenter} panel={!!terminals} auxiliaryBar={!!auxiliaryBar} />}
       <div className={`ws-parts ${state.sidebar ? '' : 'ws-no-sidebar'}`}>
-        <ActivityBar views={views} actions={activityActions} layout={layout} commands={commands} menu={menu} />
+        {props.activityBar !== false && <ActivityBar views={views} actions={activityActions} layout={layout} commands={commands} menu={menu} />}
         <Split direction="row" gap={gap} storage={storage} storageKey={`${storageKey}.columns`} className="ws-columns">
           <Pane id="sidebar" size={256} min={170} snap visible={state.sidebar} onVisibleChange={(v) => layout.setVisible('sidebar', v)}>
             <aside className="ws-part ws-sidebar" data-part="sidebar" aria-label={view.title}>

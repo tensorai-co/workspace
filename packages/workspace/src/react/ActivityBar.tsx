@@ -18,7 +18,7 @@ export interface ViewDescriptor {
   actions?: ReactNode
 }
 
-/** A button at the bottom of the activity bar, such as Accounts or Manage. */
+/** A button at the end of the activity bar, such as Accounts or Manage. */
 export interface ActivityAction {
   id: string
   title: string
@@ -31,21 +31,32 @@ export interface ActivityBarProps {
   actions?: readonly ActivityAction[]
   layout: LayoutModel
   commands: CommandRegistry
-  /** What the menu at the top lists. Without items there's no menu. */
-  menu: MenuItem[][]
+  /** What the application menu lists, or a function that reads it when it opens. Without items there's no menu. */
+  menu: MenuItem[][] | (() => MenuItem[][])
+  /**
+   * "vertical" (the default): the bar at the side of the workspace. "horizontal": a row of toolbar buttons, for a
+   * host's own bar; menus open below them.
+   */
+  orientation?: 'vertical' | 'horizontal'
+  className?: string
 }
 
-const icon = (value: CodiconName | ReactNode) => (typeof value === 'string' ? <Codicon name={value as CodiconName} size={24} /> : value)
-
-/** The activity bar: the application menu, an item per view, and actions at the bottom. */
-export function ActivityBar({ views, actions = [], layout, commands, menu }: ActivityBarProps) {
+/** The activity bar: the application menu, an item per view, and actions at the end. */
+export function ActivityBar({ views, actions = [], layout, commands, menu, orientation = 'vertical', className = '' }: ActivityBarProps) {
   useSyncExternalStore(layout.subscribe, () => layout.version)
-  const [open, setOpen] = useState<{ x: number; y: number }>()
+  const [open, setOpen] = useState<{ at: { x: number; y: number }; groups: MenuItem[][] }>()
   const { view: current, sidebar } = layout.state
+  const horizontal = orientation === 'horizontal'
+  const icon = (value: CodiconName | ReactNode) => (typeof value === 'string' ? <Codicon name={value as CodiconName} size={horizontal ? 16 : 24} /> : value)
+  /** Where a menu from a button opens: beside it at the side, under it in a row. */
+  const below = (el: Element) => {
+    const r = el.getBoundingClientRect()
+    return horizontal ? { x: r.left, y: r.bottom + 2 } : { x: r.right, y: r.top }
+  }
 
   return (
-    <nav className="ws-activitybar" aria-label="Activity bar">
-      {menu.length > 0 && (
+    <nav className={`ws-activitybar ${horizontal ? 'ws-horizontal' : ''} ${className}`} aria-label="Activity bar">
+      {(typeof menu === 'function' || menu.length > 0) && (
         <div className="ws-activity-menu">
           <button
             type="button"
@@ -54,16 +65,13 @@ export function ActivityBar({ views, actions = [], layout, commands, menu }: Act
             aria-label="Application Menu"
             aria-haspopup="menu"
             aria-expanded={!!open}
-            onClick={(e) => {
-              const r = e.currentTarget.getBoundingClientRect()
-              setOpen({ x: r.right, y: r.top })
-            }}
+            onClick={(e) => setOpen({ at: below(e.currentTarget), groups: typeof menu === 'function' ? menu() : menu })}
           >
             <Codicon name="menu" />
           </button>
         </div>
       )}
-      <div className="ws-activity-views" role="tablist" aria-orientation="vertical" aria-label="Active View Switcher">
+      <div className="ws-activity-views" role="tablist" aria-orientation={orientation} aria-label="Active View Switcher">
         {views.map((view) => {
           const checked = view.id === current && sidebar
           return (
@@ -92,10 +100,7 @@ export function ActivityBar({ views, actions = [], layout, commands, menu }: Act
               className="ws-activity-item"
               title={action.title}
               aria-label={action.title}
-              onClick={(e) => {
-                const r = e.currentTarget.getBoundingClientRect()
-                action.onClick({ x: r.right, y: r.top })
-              }}
+              onClick={(e) => action.onClick(below(e.currentTarget))}
             >
               <span className="ws-activity-indicator" />
               {icon(action.icon)}
@@ -103,7 +108,7 @@ export function ActivityBar({ views, actions = [], layout, commands, menu }: Act
           ))}
         </div>
       )}
-      {open && <Menu at={open} groups={menu} onClose={() => setOpen(undefined)} />}
+      {open && <Menu at={open.at} groups={open.groups} onClose={() => setOpen(undefined)} />}
     </nav>
   )
 }
